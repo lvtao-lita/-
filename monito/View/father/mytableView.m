@@ -53,13 +53,11 @@
     if ([[self viewController].title  isEqual:@"采样信息"]) {
         LT_sampleNextViewController * next = [[LT_sampleNextViewController alloc]init];
         next.BtnAy = @[@"基本",@"现场",@"工况",@"绘图",@"附件",@"操作"];
-        next.URLAy = @[@"http://www.baidu.com",@"http://www.sougou.com",@"http://www.hao123.com",@"http://www.360.com",@"http://www.12306.com",@"http://www.souhu.com"];
         [next creatrightBarButtonItem];
         [[self viewController].navigationController pushViewController:next animated:YES];
     }else if ([[self viewController].title  isEqual:@"监测报告"]){
         LT_MonitoringReportNextViewController * next = [[LT_MonitoringReportNextViewController alloc]init];
         next.BtnAy = @[@"报告",@"监测",@"现场",@"附件",@"操作"];
-        next.URLAy = @[@"http://www.baidu.com",@"http://www.sougou.com",@"http://www.hao123.com",@"http://www.360.com",@"http://www.12306.com"];
         [[self viewController].navigationController pushViewController:next animated:YES];
     }else if ([[self viewController].title  isEqual:@"实验室"]){
         LT_WebViewController *next = [[LT_WebViewController alloc]init];
@@ -70,25 +68,20 @@
             }
         }
         next.BtnAy = @[@"详细信息",@"流程操作"];
-        next.URLAy = @[@"http://www.baidu.com",@"http://www.360.com"];
         [[self viewController].navigationController pushViewController:next animated:YES];
     }else if ([[self viewController].title  isEqual:@"流程查询"]){
         LT_BPQViewController * next = [[LT_BPQViewController alloc]init];
-        next.URLAy =@[@"http://www.baidu.com"];
         [[self viewController].navigationController pushViewController:next animated:YES];
     }else if ([[self viewController].title  isEqual:@"企业档案"]){
         LT_sampleNextViewController * next = [[LT_sampleNextViewController alloc]init];
         next.BtnAy = @[@"信息",@"报告",@"监测",@"附件",@"排口",@"工况"];
-        next.URLAy = @[@"http://www.baidu.com",@"http://www.sougou.com",@"http://www.hao123.com",@"http://www.360.com",@"http://www.12306.com",@"http://www.souhu.com"];
         [[self viewController].navigationController pushViewController:next animated:YES];
     }else if ([[self viewController].title  isEqual:@"物质领用"]){
         LT_WebViewController *next = [[LT_WebViewController alloc]init];
-        next.URLAy = @[@"http://www.baidu.com"];
         [next creatrightBarButtonItem];
         [[self viewController].navigationController pushViewController:next animated:YES];
     }else{
         LT_WebViewController *next = [[LT_WebViewController alloc]init];
-        next.URLAy = @[@"http://www.baidu.com"];
         [[self viewController].navigationController pushViewController:next animated:YES];
     }
     

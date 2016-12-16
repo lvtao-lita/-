@@ -31,10 +31,7 @@
     cell.tittle.text = source.companyName;
     cell.remark.text = source.centerTxet;
     cell.dateTime.text = source.dateText;
-    //    cell.companyName.text = @"佛山市金刚石工具首饰有限公司";
-    //    cell.centerLabel.text = @"委托合同｜委托检测｜电磁辐射｜T20161121013";
-    //    cell.bottomLabel.text = @"采样管理｜一般｜管理员";
-    //    cell.dateLabel.text   = @"2016-11-11";
+
     return cell;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

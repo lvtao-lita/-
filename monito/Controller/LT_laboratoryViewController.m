@@ -136,10 +136,20 @@ CGRectMakeRelative(CGFloat x,CGFloat y,CGFloat width,CGFloat height)
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     // called when scroll view grinds to a halt
     UIView * vi= [self.view viewWithTag:1];
+    NSArray * btn = [self.BtnView subviews];
     for (int i = 0; i < vi.subviews.count; i++) {
         NSLog(@"btn%f-scroll%f",vi.subviews[i].frame.origin.x/vi.subviews[i].frame.size.width,scrollView.contentOffset.x/scrollView.frame.size.width);
         if ((vi.subviews[i].frame.origin.x/vi.subviews[i].frame.size.width) == (scrollView.contentOffset.x/scrollView.frame.size.width)) {
             vi.subviews[i].backgroundColor = [UIColor redColor];
+            for (int j=0; j<btn.count; j++) {
+                if (j==i) {
+                    [btn[j] setValue:@"YES" forKey:@"selected"];
+                }else{
+                    [btn[j] setValue:@"NO" forKey:@"selected"];
+                }
+                
+                
+            }
         }else{
             vi.subviews[i].backgroundColor = [UIColor whiteColor];
         }

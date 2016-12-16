@@ -4,7 +4,6 @@
  * @author lvtao
  * @date 2016-11-21
  **/
-//首页啦啦啦啦
 #define With self.view.frame.size.width
 
 #import "LT_HomeViewController.h"

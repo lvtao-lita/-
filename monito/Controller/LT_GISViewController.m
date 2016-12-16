@@ -34,10 +34,10 @@
     HomeWeb = [[LT_HomeWeb alloc]init];
     HomeWeb.frame = CGRectMakeRelative(0, 0, 375, 603);
     [self.view addSubview:HomeWeb];
-    [HomeWeb loadHomeWev:@"http://music.163.com/"];
+    [HomeWeb loadHomeWev:@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/GisBMap.aspx"];
 }
 -(void)loadWeb{
-    [HomeWeb loadHomeWev:@"http://music.163.com/"];
+    [HomeWeb loadHomeWev:@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/GisBMap.aspx"];
 }
 
 CG_INLINE CGRect

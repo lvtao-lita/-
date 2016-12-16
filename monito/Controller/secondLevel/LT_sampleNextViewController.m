@@ -19,7 +19,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
 }
 -(void)creatrightBarButtonItem{
     UIBarButtonItem * rightBtn1 = [[UIBarButtonItem alloc]initWithTitle:@"定位" style:UIBarButtonItemStyleDone target:self action:@selector(location:)];

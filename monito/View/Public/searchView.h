@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface searchView : UIView
+@property(strong,nonatomic) UITextField *searchTextField;
+@property(strong,nonatomic) UIButton * btn;
 -(void)creatSearchView:(NSString *)string;
 @end

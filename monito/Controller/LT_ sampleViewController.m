@@ -48,10 +48,15 @@
     
     loginSource * loginS = [loginSource sharedInstance];
     NSMutableDictionary * dic1 = [[NSMutableDictionary alloc]init];
-    [dic1 setObject:@"2016-11-28" forKey:@"endtime"];
-    [dic1 setObject:@"" forKey:@"keyword"];
+    [dic1 setObject:self.inqView.endTime.text forKey:@"endtime"];
+    if (self.inqView.keyword.text!=nil) {
+        [dic1 setObject:self.inqView.keyword.text forKey:@"keyword"];
+    }else{
+        [dic1 setObject:@"" forKey:@"keyword"];
+    }
+    
     [dic1 setObject:loginS.password forKey:@"password"];
-    [dic1 setObject:@"2016-08-30" forKey:@"starttime"];
+    [dic1 setObject:self.inqView.starTime.text forKey:@"starttime"];
     [dic1 setObject:loginS.userName forKey:@"username"];
     NSMutableArray * cellAy = [[NSMutableArray alloc]init];
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
@@ -69,7 +74,7 @@
         self.tableView.sourceAy = sourceAy;
         [self.tableView reloadData];
     } failure:^(NSDictionary *dic) {
-        NSLog(@"shishisshs");
+        NSLog(@"请求失败");
     }];
     
 }

@@ -17,15 +17,23 @@
 
 -(void)creatView{
     self.backgroundColor = [UIColor whiteColor];
+    NSDate *currentDate = [NSDate date];//获取当前时间，日期
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM-dd"];
+    NSTimeInterval time = 60 * 24 * 60 * 60;
+    NSDate * last = [currentDate dateByAddingTimeInterval:-time];
+    NSString *dateString = [dateFormatter stringFromDate:currentDate];
+    NSString *lastString =[dateFormatter stringFromDate:last];
+    
 //    NSArray * arr = @[@"开始时间：",@"结束时间：",@"关 键 字："];
     self.starTime = [[UITextField alloc]init];
     self.starTime.frame = CGRectMakeRelative(0, 0, 375, 40);
-    self.starTime.placeholder = @"输入开始时间";
+    self.starTime.text = lastString;
     self.starTime.delegate =self;
     [self setTextfiled:self.starTime leftViewname:@"开始时间："];
     self.endTime = [[UITextField alloc]init];
     self.endTime.frame = CGRectMakeRelative(0, 40, 375, 40);
-    self.endTime.placeholder = @"输入结束时间";
+    self.endTime.text = dateString;
     self.endTime.delegate = self;
     [self setTextfiled:self.endTime leftViewname:@"结束时间："];
     self.keyword = [[UITextField alloc]init];
@@ -61,9 +69,21 @@
     return NO;
 }
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
-    NSLog(@"开始编辑");
+    
 
 }
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    
+    return YES;
+}
+
 //获取父视图
 - (UIViewController *)viewController
 {

@@ -10,7 +10,7 @@
 #import "loginSource.h"
 @interface ViewController (){
     NSString * pswStr;
-    loginRecord * login;
+    
 }
 ///@brief 用户名输入
 @property (weak, nonatomic) IBOutlet UITextField *userName;
@@ -24,6 +24,12 @@
 @property (weak, nonatomic) IBOutlet UIButton *outIPBtn;
 @property (weak, nonatomic) IBOutlet UIButton *passtwordBtn;
 @property (weak, nonatomic) IBOutlet UIButton *InputBtn;
+@property (strong,nonatomic) loginRecord * login;
+
+
+
+
+
 
 @end
 
@@ -37,25 +43,22 @@
     [self.InputBtn setImage:[UIImage imageNamed:@"select.png"] forState:UIControlStateSelected];
     NSUserDefaults * user = [NSUserDefaults standardUserDefaults];
     NSData * data = [user objectForKey:@"loginRecord"];
-    login = [loginRecord sharedInstance];
-    login = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    if (login.passflag == YES) {
-        self.userName.text = login.userName;
-        self.pastword.text = login.password;
-        self.passtwordBtn.selected = login.passflag;
+    _login = [loginRecord sharedInstance];
+    _login = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    if (_login.passflag == YES) {
+        self.userName.text = _login.userName;
+        self.pastword.text = _login.password;
+        self.passtwordBtn.selected = _login.passflag;
     }
-    if (login.OUTIPflag == YES) {
-        self.outIP.text    = login.OUTIP;
-        self.outIPBtn.selected = login.OUTIPflag;
+    if (_login.OUTIPflag == YES) {
+        self.outIP.text    = _login.OUTIP;
+        self.outIPBtn.selected = _login.OUTIPflag;
     }
-    if (login.INPIPflag == YES) {
-        self.intIP.text    = login.INTIP;
+    if (_login.INPIPflag == YES) {
+        self.intIP.text    = _login.INTIP;
     }
-    
-    
-    
-    
-    self.InputBtn.selected    = login.INPIPflag;
+
+    self.InputBtn.selected    = _login.INPIPflag;
 
 }
 
@@ -68,17 +71,21 @@
 - (IBAction)rememberPasstword:(UIButton *)sender {
     if ( self.passtwordBtn.selected == NO) {
         self.passtwordBtn.selected= YES;
+//        login.passflag = YES;
         
     }else{
         self.passtwordBtn.selected= NO;
+//        login.passflag = NO;
     }
 }
 #pragma mark - 记住外网IP
 - (IBAction)rememberOutIP:(UIButton *)sender {
     if ( self.outIPBtn.selected == NO) {
         self.outIPBtn.selected= YES;
+        
     }else{
         self.outIPBtn.selected= NO;
+        
     }
     
 }
@@ -86,34 +93,38 @@
 - (IBAction)rememberInputIP:(UIButton *)sender {
     if ( self.InputBtn.selected == NO) {
         self.InputBtn.selected= YES;
+        
     }else{
         self.InputBtn.selected= NO;
+        
     }
     
 }
 #pragma mark - 登录
 - (IBAction)logIn:(UIButton *)sender {
     //密码记录
-    login.userName = self.userName.text;
-    login.password = self.pastword.text;
-    login.OUTIP = self.outIP.text;
-    login.INTIP = self.intIP.text;
+    _login.userName = self.userName.text;
+    _login.password = self.pastword.text;
+    _login.OUTIP = self.outIP.text;
+    _login.INTIP = self.intIP.text;
     if ( self.passtwordBtn.selected == YES) {
-        login.passflag = YES;
+  
+        
+        _login.passflag = YES;
         
     }else{
-        login.passflag = NO;
+        _login.passflag = NO;
     }
     if ( self.outIPBtn.selected == YES) {
-        login.OUTIPflag =YES;
+        _login.OUTIPflag =YES;
     }else{
-        login.OUTIPflag =NO;
+        _login.OUTIPflag =NO;
     }
     if ( self.InputBtn.selected == YES) {
         
-        login.INPIPflag = YES;
+        _login.INPIPflag = YES;
     }else{
-        login.INPIPflag = NO;
+        _login.INPIPflag = NO;
     }
     
     
@@ -125,14 +136,15 @@
     [NetworkRequests requesPasswordtWithparameters:dic andWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/LoginSvc.asmx/getTestPsw" Success:^(NSString *password) {
         NSLog(@"%@",password);
         pswStr = password;
+   
         logSource.password = password;
-        login.encryptPsw = password;
+        _login.encryptPsw = password;
         NSDictionary * loginDic = @{@"password":[NSString stringWithFormat:@"%@",pswStr],@"username":[NSString stringWithFormat:@"%@",self.userName.text]};
         NSLog(@"%@",loginDic);
         [NetworkRequests requestWithparameters:loginDic andWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/LoginSvc.asmx/login" Success:^(NSDictionary *dic) {
             //记录用户名
             NSUserDefaults * user = [NSUserDefaults standardUserDefaults];
-            NSData * data = [NSKeyedArchiver archivedDataWithRootObject:login];
+            NSData * data = [NSKeyedArchiver archivedDataWithRootObject:_login];
             [user setObject:data forKey:@"loginRecord"];
             [user synchronize];
             //返回数据记录

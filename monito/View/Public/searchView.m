@@ -21,22 +21,19 @@
     //搜索View
     UIView * view = [[UIView alloc]init];
     view.frame = CGRectMakeRelative(0, 0, 375, 60);
-    UITextField * tf = [[UITextField alloc]initWithFrame:CGRectMakeRelative(10, 10, 300, 40)];
-    tf.placeholder = string;
-    tf.backgroundColor = [UIColor whiteColor];
+    _searchTextField = [[UITextField alloc]initWithFrame:CGRectMakeRelative(10, 10, 300, 40)];
+    _searchTextField.placeholder = string;
+    _searchTextField.backgroundColor = [UIColor whiteColor];
     
-    UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMakeRelative(310, 10, 65, 40)];
-    [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [btn setTitle:@"搜索" forState:UIControlStateNormal];
-    [btn addTarget:self action:@selector(clik:) forControlEvents:UIControlEventTouchUpInside];
+    _btn = [[UIButton alloc]initWithFrame:CGRectMakeRelative(310, 10, 65, 40)];
+    [_btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_btn setTitle:@"搜索" forState:UIControlStateNormal];
     
-    [view addSubview:btn];
-    [view addSubview:tf];
+    
+    [view addSubview:_btn];
+    [view addSubview:_searchTextField];
     
     [self addSubview:view];
-}
--(void)clik:(UIButton *)btn{
-    NSLog(@"点击搜索");
 }
 
 CG_INLINE CGRect

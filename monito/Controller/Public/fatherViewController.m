@@ -27,16 +27,17 @@
     UIBarButtonItem * rightBtn = [[UIBarButtonItem alloc]initWithTitle:@"查询" style:UIBarButtonItemStyleDone target:self action:@selector(inquire)];
     self.navigationItem.rightBarButtonItem = rightBtn;
     self.view.backgroundColor = [UIColor colorWithRed:219.0/255 green:219.0/255 blue:219.0/255 alpha:1];
-    [self creatDataSource];
+    
     [self creatUI];
+    [self creatDataSource];
 }
 -(void)creatDataSource{
     loginSource * logSource =[loginSource sharedInstance];
     dic1 = [[NSMutableDictionary alloc]init];
-    [dic1 setObject:@"2016-11-28" forKey:@"endtime"];
+    [dic1 setObject:self.inqView.endTime.text forKey:@"endtime"];
     [dic1 setObject:@"" forKey:@"keyword"];
     [dic1 setObject:logSource.password forKey:@"password"];
-    [dic1 setObject:@"2016-08-30" forKey:@"starttime"];
+    [dic1 setObject:self.inqView.starTime.text forKey:@"starttime"];
     [dic1 setObject:logSource.userName forKey:@"username"];
     if ([self.title isEqualToString:@"采样信息"]) {
         [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/TaskSampleSvc.asmx/taskSampleList"];
@@ -48,6 +49,15 @@
         [self flowInquireRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
     }
     if ([self.title isEqualToString:@"档案查询"]) {
+        [self flowInquireRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
+    }
+    if([self.title isEqualToString:@"企业档案"]){
+        [dic1 setObject:@"2" forKey:@"start"];
+        [dic1 setObject:@"10" forKey:@"limit"];
+        [dic1 setObject:@"" forKey:@"starttime"];
+        [self enterpriseArchivesRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/PollutionUnitSvc.asmx/pollutionUnitList"];
+        
+    }if ([self.title isEqualToString:@"档案查询"]) {
         [self flowInquireRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
     }
 
@@ -79,6 +89,36 @@
 
 -(void)inquire{
     NSLog(@"点击查询");
+    [self.inqView.keyword resignFirstResponder];
+    [dic1 setObject:self.inqView.keyword.text forKey:@"keyword"];
+    [dic1 setObject:self.inqView.endTime.text forKey:@"endtime"];
+    [dic1 setObject:self.inqView.starTime.text forKey:@"starttime"];
+    if ([self.title isEqualToString:@"采样信息"]) {
+        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/TaskSampleSvc.asmx/taskSampleList"];
+    }
+    if ([self.title isEqualToString:@"监测报告"]) {
+        [self MonitoringReportRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/TaskReport/TaskReportSvc.asmx/taskReportList"];
+    }
+    if ([self.title isEqualToString:@"流程查询"]) {
+        [self flowInquireRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
+    }
+    if ([self.title isEqualToString:@"档案查询"]) {
+        [self flowInquireRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
+    }
+    if([self.title isEqualToString:@"样品交接"]){
+        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/TaskSampleSvc.asmx/sampleJoinList"];
+    }
+    if([self.title isEqualToString:@"企业档案"]){
+        [dic1 setObject:@"1" forKey:@"start"];
+        [dic1 setObject:@"10" forKey:@"limit"];
+        [dic1 setObject:self.inqView.starTime.text forKey:@"starttime"];
+        [self enterpriseArchivesRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/PollutionUnitSvc.asmx/pollutionUnitList"];
+        
+    }
+    if([self.title isEqualToString:@"设备借还"]){
+        [self equipmentBorrowAndRepayWith:@"http://120.24.7.178/fshb/Manager/MobileSvc/ApparatusLendingReturnSvc.asmx/lendingReturnList"];
+    }
+    
 }
 
 -(void)requestWithURL:(NSString *)url{
@@ -140,6 +180,49 @@
     } failure:^(NSDictionary *dic) {
         NSLog(@"shishisshs");
     }];
+
+}
+//设备借还请求
+-(void)equipmentBorrowAndRepayWith:(NSString *)url{
+    [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
+        NSLog(@"%@",dic);
+        NSMutableArray * cellAy = [[NSMutableArray alloc]init];
+        for (NSDictionary *obj in dic[@"obj"]) {
+            dateSource * data = [[dateSource alloc]init];
+            data.companyName = [NSString stringWithFormat:@"%@",obj[@"place_name"]];
+            data.centerTxet = [NSString stringWithFormat:@"%@|%@|%@",obj[@"business_code"],obj[@"envi_type"],obj[@"monitor_type"]];
+            data.bottomTxet = [NSString stringWithFormat:@"%@|%@|%@",obj[@"task_code"],obj[@"entity_name"],obj[@"flow_state"]];
+            data.dateText = [NSString stringWithFormat:@"%@",obj[@"date_begin"]];
+            [cellAy addObject:data];
+        }
+        sourceAy = [[NSArray alloc]initWithArray:cellAy];
+        _tableView.sourceAy = sourceAy;
+        [_tableView reloadData];
+    } failure:^(NSDictionary *dic) {
+        NSLog(@"shishisshs");
+    }];
+}
+//企业档案列表请求
+#warning 参数start（分页），limit未知
+-(void)enterpriseArchivesRequstWithURL:(NSString *)url{
+    
+    [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
+        NSLog(@"%@",dic);
+        NSMutableArray * cellAy = [[NSMutableArray alloc]init];
+        for (NSDictionary *obj in dic[@"obj"]) {
+            dateSource * data = [[dateSource alloc]init];
+            data.companyName = [NSString stringWithFormat:@"%@",obj[@"unit_name"]];
+            data.centerTxet = [NSString stringWithFormat:@"%@|%@",obj[@"unit_industry_type"],obj[@"unit_district_type"]];
+            data.dateText = [NSString stringWithFormat:@"%@",obj[@"unit_build_time"]];
+            [cellAy addObject:data];
+        }
+        sourceAy = [[NSArray alloc]initWithArray:cellAy];
+        _tableView.sourceAy = sourceAy;
+        [_tableView reloadData];
+    } failure:^(NSDictionary *dic) {
+        NSLog(@"shishisshs");
+    }];
+
 
 }
 //创建内联函数 (在程序编译的时候执行,在函数前声明后编译器执行起来更具效率，使宏的定义更节省，不涉及栈的操作)

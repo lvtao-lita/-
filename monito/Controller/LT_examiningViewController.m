@@ -11,6 +11,9 @@
 #import "monitoryInquireTableView.h"
 @interface LT_examiningViewController (){
     NSArray * sourceAy;
+    monitoryInquireTableView * tableView;
+    NSMutableDictionary * dic1;
+    searchView * search;
 }
 
 @end
@@ -21,25 +24,56 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithRed:219.0/255 green:219.0/255 blue:219.0/255 alpha:1];
-    searchView * search = [[searchView alloc]initWithFrame:CGRectMakeRelative(0, 0, 375, 60)];
+    search = [[searchView alloc]initWithFrame:CGRectMakeRelative(0, 0, 375, 60)];
     [search creatSearchView:@"输入关键字"];
+    [search.btn addTarget:self action:@selector(clik:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:search];
     [self creatDataSource];
     [self creatMonitoryInquireTableView];
 }
 -(void)creatDataSource{
-    NSDictionary * dic = @{@"companyName":@"佛山市金刚石工具首饰有限公司",@"centerTxet":@"委托合同",@"dateText":@"2016-11-11"};
-    NSMutableArray * arr = [[NSMutableArray alloc]init];
-    for (int i = 0; i < 2; i++) {
-        [arr addObject:dic];
-    }
-    sourceAy = [[NSArray alloc]initWithArray:arr];
+    dic1 = [[NSMutableDictionary alloc]init];
+    loginSource * loginS = [loginSource sharedInstance];
+    [dic1 setObject:@"" forKey:@"filter"];
+    [dic1 setObject:@"10" forKey:@"limit"];
+    [dic1 setObject:@"1" forKey:@"start"];
+    [dic1 setObject:loginS.password forKey:@"password"];
+    [dic1 setObject:loginS.userName forKey:@"username"];
+
+    [self RequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MeetEmergencySvc.asmx/list"];
 }
+
+-(void)clik:(UIButton *)btn{
+    [dic1 setObject:search.searchTextField.text forKey:@"filter"];
+    [dic1 setObject:@"10" forKey:@"limit"];
+    [dic1 setObject:@"1" forKey:@"start"];
+    NSLog(@"%@", search.searchTextField.text);
+    [self RequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MeetEmergencySvc.asmx/list"];
+}
+
 -(void)creatMonitoryInquireTableView{
-    monitoryInquireTableView * tableView = [[monitoryInquireTableView alloc]init];
+    tableView = [[monitoryInquireTableView alloc]init];
     tableView.sourceAy = sourceAy;
     tableView.frame = CGRectMakeRelative(0, 65, 375, 538);
     [self.view addSubview:tableView];
+}
+-(void)RequstWithURL:(NSString *)url{
+    NSMutableArray * cellAy = [[NSMutableArray alloc]init];
+    [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
+        NSLog(@"%@",dic);
+        for (NSDictionary *obj in dic[@"obj"]) {
+            dateSource * data = [[dateSource alloc]init];
+            data.companyName = [NSString stringWithFormat:@"%@",obj[@"emergency_name"]];
+            data.centerTxet = [NSString stringWithFormat:@"%@",obj[@"emergency_place"]];
+            data.dateText = [NSString stringWithFormat:@"%@",obj[@"emergency_time"]];
+            [cellAy addObject:data];
+        }
+        sourceAy = [NSArray arrayWithArray:cellAy];
+        tableView.sourceAy = sourceAy;
+        [tableView reloadData];
+    } failure:^(NSDictionary *dic) {
+        NSLog(@"shishisshs");
+    }];
 }
 CG_INLINE CGRect
 CGRectMakeRelative(CGFloat x,CGFloat y,CGFloat width,CGFloat height)
