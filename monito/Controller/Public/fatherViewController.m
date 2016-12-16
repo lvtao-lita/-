@@ -8,6 +8,7 @@
 
 #import "fatherViewController.h"
 #import "dateSource.h"
+#import "timeCalculateNS.h"
 #import "PrefixHeader.pch"
 @interface fatherViewController (){
     NSArray * sourceAy;
@@ -59,6 +60,10 @@
         
     }if ([self.title isEqualToString:@"档案查询"]) {
         [self flowInquireRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
+    }
+    if([self.title isEqualToString:@"设备借还"]){
+        
+        [self equipmentBorrowAndRepayWith:@"http://120.24.7.178/fshb/Manager/MobileSvc/ApparatusLendingReturnSvc.asmx/lendingReturnList"parameter:dic1];
     }
 
 }
@@ -116,11 +121,11 @@
         
     }
     if([self.title isEqualToString:@"设备借还"]){
-        [self equipmentBorrowAndRepayWith:@"http://120.24.7.178/fshb/Manager/MobileSvc/ApparatusLendingReturnSvc.asmx/lendingReturnList"];
+        [self equipmentBorrowAndRepayWith:@"http://120.24.7.178/fshb/Manager/MobileSvc/ApparatusLendingReturnSvc.asmx/lendingReturnList"parameter:dic1];
     }
     
 }
-
+//采样信息
 -(void)requestWithURL:(NSString *)url{
     NSMutableArray * cellAy = [[NSMutableArray alloc]init];
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
@@ -142,7 +147,7 @@
     }];
 
 }
-
+//监测报告
 -(void)MonitoringReportRequstWithURL:(NSString *)url{
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
         NSLog(@"%@",dic);
@@ -162,6 +167,7 @@
         NSLog(@"shishisshs");
     }];
 }
+//流程查询
 -(void)flowInquireRequstWithURL:(NSString *)url{
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
         NSLog(@"%@",dic);
@@ -183,8 +189,13 @@
 
 }
 //设备借还请求
--(void)equipmentBorrowAndRepayWith:(NSString *)url{
-    [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
+-(void)equipmentBorrowAndRepayWith:(NSString *)url parameter:(NSDictionary *)parameter{
+    //获取当前系统时间
+    NSDate * nowDate = [NSDate date];
+    NSDateFormatter * dateFomatter = [[NSDateFormatter alloc] init];
+    dateFomatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+    NSString * nowDateStr = [dateFomatter stringFromDate:nowDate];
+    [NetworkRequests requestWithparameters:parameter andWithURL:url Success:^(NSDictionary *dic) {
         NSLog(@"%@",dic);
         NSMutableArray * cellAy = [[NSMutableArray alloc]init];
         for (NSDictionary *obj in dic[@"obj"]) {

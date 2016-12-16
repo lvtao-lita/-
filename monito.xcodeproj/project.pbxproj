@@ -38,6 +38,7 @@
 		05041B6C1E02659500BCA80E /* Icon-87.png in Resources */ = {isa = PBXBuildFile; fileRef = 05041B511E02659500BCA80E /* Icon-87.png */; };
 		05041B6D1E02659500BCA80E /* Icon-90.png in Resources */ = {isa = PBXBuildFile; fileRef = 05041B521E02659500BCA80E /* Icon-90.png */; };
 		05041B6E1E02659500BCA80E /* Icon-96.png in Resources */ = {isa = PBXBuildFile; fileRef = 05041B531E02659500BCA80E /* Icon-96.png */; };
+		050B76231E03ECD70053DD16 /* timeCalculateNS.m in Sources */ = {isa = PBXBuildFile; fileRef = 050B76221E03ECD70053DD16 /* timeCalculateNS.m */; };
 		05193EC11DE3E02D006C4AA2 /* but7_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 05193EBC1DE3E02D006C4AA2 /* but7_off.png */; };
 		05193EC21DE3E02D006C4AA2 /* YPpickViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 05193EBE1DE3E02D006C4AA2 /* YPpickViewController.m */; };
 		05193EC31DE3E02D006C4AA2 /* YPpickViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 05193EC01DE3E02D006C4AA2 /* YPpickViewModel.m */; };
@@ -200,6 +201,8 @@
 		05041B511E02659500BCA80E /* Icon-87.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-87.png"; sourceTree = "<group>"; };
 		05041B521E02659500BCA80E /* Icon-90.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-90.png"; sourceTree = "<group>"; };
 		05041B531E02659500BCA80E /* Icon-96.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-96.png"; sourceTree = "<group>"; };
+		050B76211E03ECD70053DD16 /* timeCalculateNS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = timeCalculateNS.h; sourceTree = "<group>"; };
+		050B76221E03ECD70053DD16 /* timeCalculateNS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = timeCalculateNS.m; sourceTree = "<group>"; };
 		05193EBC1DE3E02D006C4AA2 /* but7_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = but7_off.png; sourceTree = "<group>"; };
 		05193EBD1DE3E02D006C4AA2 /* YPpickViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YPpickViewController.h; sourceTree = "<group>"; };
 		05193EBE1DE3E02D006C4AA2 /* YPpickViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YPpickViewController.m; sourceTree = "<group>"; };
@@ -518,6 +521,8 @@
 				0521A3251DEBD27C00F33DBC /* NetworkRequests.m */,
 				0559E81F1DED7C33001DDC33 /* NSString+subAppend.h */,
 				0559E8201DED7C33001DDC33 /* NSString+subAppend.m */,
+				050B76211E03ECD70053DD16 /* timeCalculateNS.h */,
+				050B76221E03ECD70053DD16 /* timeCalculateNS.m */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -1229,6 +1234,7 @@
 				05E920FD1DE67FC900AA8D8B /* affairsTableViewCell.m in Sources */,
 				05AB022F1DE6E803007FBBAC /* monitoryInquireTableViewCell.m in Sources */,
 				05193ED01DE3F210006C4AA2 /* ViewController.m in Sources */,
+				050B76231E03ECD70053DD16 /* timeCalculateNS.m in Sources */,
 				05AB02231DE691DA007FBBAC /* LT_WebViewController.m in Sources */,
 				058828F21DE427A400EFF5C8 /* LT_inventoryViewController.m in Sources */,
 				058828E31DE4261200EFF5C8 /* LT_affairsViewController.m in Sources */,
