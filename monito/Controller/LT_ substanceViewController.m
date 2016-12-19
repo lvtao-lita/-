@@ -7,8 +7,11 @@
 //
 
 #import "LT_ substanceViewController.h"
+#import "NetworkRequests.h"
 #import "PrefixHeader.pch"
-@interface LT__substanceViewController ()
+@interface LT__substanceViewController (){
+    NSMutableDictionary * dic1;
+}
 
 @end
 
@@ -24,9 +27,19 @@
     [QRcodeBtn setTitle:@"扫描二维码" forState:UIControlStateNormal];
     [QRcodeBtn addTarget:self action:@selector(QRcode:) forControlEvents:UIControlEventTouchUpInside];
     [QRcodeBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-    
+    [self creatDataSource];
     [self.view addSubview:equipmentBtn];
     [self.view addSubview:QRcodeBtn];
+}
+-(void)creatDataSource{
+    loginSource * logSource =[loginSource sharedInstance];
+    dic1 = [[NSMutableDictionary alloc]init];
+    [dic1 setObject:self.inqView.endTime.text forKey:@"endtime"];
+    [dic1 setObject:@"" forKey:@"keyword"];
+    [dic1 setObject:logSource.password forKey:@"password"];
+    [dic1 setObject:self.inqView.starTime.text forKey:@"starttime"];
+    [dic1 setObject:logSource.userName forKey:@"username"];
+    [self requstion];
 }
 -(void)QRcode:(UIButton *)btn{
     // 1、 获取摄像设备
@@ -45,6 +58,41 @@
     }
     
 }
+-(void)requstion{
+    [NetworkRequests requestWithparameters:dic1 andWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/ReagentSvc.asmx/reagentReceiveList" Success:^(NSDictionary *dic) {
+        NSMutableArray * cellAy = [[NSMutableArray alloc]init];
+        for (NSDictionary *obj in dic[@"obj"]) {
+            dateSource * data = [[dateSource alloc]init];
+            data.companyName = [NSString stringWithFormat:@"%@(%@)",obj[@"reagent_type_name"],obj[@"reagent_name"]];
+            NSArray * strAy = [[NSArray alloc]init];
+            if (!([obj[@"valid_date"] isKindOfClass:[NSString class]])) {
+                strAy = [NSArray arrayWithObjects:@"nil", nil];
+                
+            }else{ 
+                strAy = [obj[@"valid_date"] componentsSeparatedByString:@" "];
+            }
+            
+            data.centerTxet = [NSString stringWithFormat:@"有效期至(%@)|验收情况(%@)",strAy[0],obj[@"check_result"]];
+            
+            data.bottomTxet = [NSString stringWithFormat:@"领用人(%@)",obj[@"receive_man"]];
+            strAy = [obj[@"receive_date"] componentsSeparatedByString:@" "];
+            data.dateText = [NSString stringWithFormat:@"领用日期(%@)",strAy[0]];
+            [cellAy addObject:data];
+        }
+        self.tableView.sourceAy = cellAy;
+        [self.tableView reloadData];
+        
+    } failure:^(NSDictionary *dic) {
+        NSLog(@"请求失败");
+    }];
+}
+-(void)inquire{
+    NSLog(@"物质领用查询");
+    [dic1 setObject:self.inqView.keyword.text forKey:@"keyword"];
+    [self requstion];
+    
+}
+
 
 //创建内联函数 (在程序编译的时候执行,在函数前声明后编译器执行起来更具效率，使宏的定义更节省，不涉及栈的操作)
 CG_INLINE CGRect

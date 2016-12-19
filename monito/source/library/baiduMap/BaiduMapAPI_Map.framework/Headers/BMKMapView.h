@@ -585,12 +585,8 @@ typedef enum {
 
 /**
  *地图渲染每一帧画面过程中，以及每次需要重绘地图时（例如添加覆盖物）都会调用此接口
- *@param mapView
- 
- 
- 
  地图View
- *@param status 此时地图的状态
+ * 此时地图的状态
  */
 - (void)mapView:(BMKMapView *)mapView onDrawMapFrame:(BMKMapStatus*)status;
 

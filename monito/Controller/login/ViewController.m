@@ -149,10 +149,10 @@
             [user synchronize];
             //返回数据记录
             
-            logSource.obj = dic[@"obj"][0];
-            logSource.idid =dic[@"id"];
-            logSource.total = dic[@"total"];
-            logSource.success = dic[@"success"];
+            logSource.obj      = dic[@"obj"][0];
+            logSource.idid     = dic[@"id"];
+            logSource.total    = dic[@"total"];
+            logSource.success  = dic[@"success"];
             logSource.userName = self.userName.text;
             //跳转
             LT_HomeViewController * homeCon = [[LT_HomeViewController alloc]init];

@@ -16,11 +16,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIButton * equipmentBtn = [[UIButton alloc]initWithFrame:CGRectMakeRelative(160, 0, 110, 60)];
+    UIButton * equipmentBtn = [[UIButton alloc]initWithFrame:CGRectMakeRelative(160, 0, 110, 40)];
     [equipmentBtn setTitle:@"设备借出" forState:UIControlStateNormal];
     [equipmentBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     
-    UIButton * QRcodeBtn = [[UIButton alloc]initWithFrame:CGRectMakeRelative(260, 0, 110, 60)];
+    UIButton * QRcodeBtn = [[UIButton alloc]initWithFrame:CGRectMakeRelative(260, 0, 110, 40)];
     [QRcodeBtn setTitle:@"扫描二维码" forState:UIControlStateNormal];
     [QRcodeBtn addTarget:self action:@selector(QRcode:) forControlEvents:UIControlEventTouchUpInside];
     [QRcodeBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];

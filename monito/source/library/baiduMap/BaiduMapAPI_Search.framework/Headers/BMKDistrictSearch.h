@@ -46,12 +46,6 @@
 /// 检索模块的delegate，此处记得不用的时候需要置nil，否则影响内存的释放
 @property (nonatomic, weak) id<BMKDistrictSearchDelegate> delegate;
 
-/**
- *行政区域检索
- *异步函数，返回结果在BMKDistrictSearchDelegate的onGetDistrictResult通知
- *@param DistrictSearchOption 公交线路检索信息类
- *@return 成功返回YES，否则返回NO
- */
 - (BOOL)districtSearch:(BMKDistrictSearchOption*)districtSearchOption;
 
 @end

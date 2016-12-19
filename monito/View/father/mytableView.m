@@ -34,6 +34,9 @@
     cell.centerLabel.text = source.centerTxet;
     cell.bottomLabel.text = source.bottomTxet;
     cell.dateLabel.text   = source.dateText;
+    if ([source.bottomTxet rangeOfString:@"超时"].location != NSNotFound) {
+        cell.bottomLabel.textColor = [UIColor redColor];
+    }
 //    cell.companyName.text = @"佛山市金刚石工具首饰有限公司";
 //    cell.centerLabel.text = @"委托合同｜委托检测｜电磁辐射｜T20161121013";
 //    cell.bottomLabel.text = @"采样管理｜一般｜管理员";

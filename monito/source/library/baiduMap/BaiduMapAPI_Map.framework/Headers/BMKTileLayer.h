@@ -55,13 +55,6 @@
  *瓦片图片是jpeg或者png格式，size为256x256
  */
 @interface BMKSyncTileLayer : BMKTileLayer
-
-/**
- @brief 通过同步方法获取瓦片数据，子类必须实现该方法
-        这个方法会在多个线程中调用，需要考虑线程安全
- @param (x, y, zoom)瓦片坐标
- @return (x, y, zoom)所对应瓦片的UIImage对象
-*/
 - (UIImage *)tileForX:(NSInteger)x y:(NSInteger)y zoom:(NSInteger)zoom;
 
 @end
@@ -74,11 +67,11 @@
 
 /**
  @brief 通过异步方法获取瓦片数据，子类必须实现该方法
- @param (x, y, zoom)瓦片坐标
- @return result 用来传入瓦片数据或加载瓦片失败的error访问的回调block
+ @瓦片坐标
+ @用来传入瓦片数据或加载瓦片失败的error访问的回调block
  */
 - (void)loadTileForX:(NSInteger)x y:(NSInteger)y zoom:(NSInteger)zoom result:(void (^)(UIImage *tileImage, NSError *error))result;
 
 @end
 
-#endif /* BMKTileLayer_h */
+#endif

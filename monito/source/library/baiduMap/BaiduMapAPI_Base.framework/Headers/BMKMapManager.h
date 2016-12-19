@@ -33,11 +33,7 @@ typedef enum {
  */
 + (void)logEnable:(BOOL) enable module:(BMKMapModule) mapModule;
 
-/**
-*启动引擎
-*@param key 申请的有效key
-*@param delegate 
-*/
+
 -(BOOL)start:(NSString*)key generalDelegate:(id<BMKGeneralDelegate>)delegate;
 
 /**

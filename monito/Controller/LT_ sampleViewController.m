@@ -7,11 +7,13 @@
 //
 
 #import "LT_ sampleViewController.h"
+#import "LT_oneWebViewController.h"
 #import "PrefixHeader.pch"
 
 
-@interface LT__sampleViewController (){
+@interface LT__sampleViewController ()<UITableViewDelegate>{
     NSArray * sourceAy;
+    NSMutableArray * parameter;
 }
 
 @end
@@ -20,6 +22,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.tableView.delegate = self;
     [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/TaskSampleSvc.asmx/sampleJoinList"];
     UIButton * QRcodeBtn = [[UIButton alloc]initWithFrame:CGRectMakeRelative(260, 0, 110, 40)];
     [QRcodeBtn setTitle:@"扫描二维码" forState:UIControlStateNormal];
@@ -61,14 +64,22 @@
     NSMutableArray * cellAy = [[NSMutableArray alloc]init];
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
         NSLog(@"%@",dic);
-        
+        parameter = [[NSMutableArray alloc]init];
         for (NSDictionary *obj in dic[@"obj"]) {
+            loginSource * logSource = [loginSource sharedInstance];
+            NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc]init];
+            [parameterDic setObject:@"Edit" forKey:@"CMD"];
+            [parameterDic setObject:obj[@"task_id"] forKey:@"SessionId"];
+            [parameterDic setObject:obj[@"task_scene_id"] forKey:@"TaskSceneId"];
+            [parameterDic setObject:logSource.obj[@"UserID"] forKey:@"UserId"];
+            
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@",obj[@"place_name"]];
             data.bottomTxet = [NSString stringWithFormat:@"%@",obj[@"task_code"]];
             data.centerTxet = [NSString stringWithFormat:@"%@|%@|%@",obj[@"envi_type"],obj[@"monitor_type"],obj[@"entity_name"]];
             data.dateText = [NSString stringWithFormat:@"%@",obj[@"scene_start_time"]];
             [cellAy addObject:data];
+            [parameter addObject:parameterDic];
         }
         sourceAy = [[NSArray alloc]initWithArray:cellAy];
         self.tableView.sourceAy = sourceAy;
@@ -77,6 +88,19 @@
         NSLog(@"请求失败");
     }];
     
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    LT_oneWebViewController * WebCon = [[LT_oneWebViewController alloc]init];
+    WebCon.parameter =parameter[indexPath.row];
+    [self.navigationController pushViewController:WebCon animated:YES];
+    
+    
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    AppDelegate * app = (id)[UIApplication sharedApplication].delegate;
+    return 90*app.autoSizeScaleY;
 }
 
 CG_INLINE CGRect

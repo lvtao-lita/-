@@ -101,7 +101,7 @@
         scrollView.contentSize = CGSizeMake(375*arr.count, 553);
     }else{
         scrollView.frame = CGRectMakeRelative(0, 0, 375, 603);
-        scrollView.contentSize = CGSizeMake(375*arr.count, 6703);
+        scrollView.contentSize = CGSizeMake(375*arr.count, 603);
     }
     
     [self.view addSubview:scrollView];

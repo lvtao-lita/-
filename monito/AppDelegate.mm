@@ -12,6 +12,13 @@
 
 @end
 
+@interface UIView(_Xcode_)
++(BOOL)_toolsDebugAlignmentRects;
++(void)_enableToolsDebugAlignmentRects:(BOOL)flag;
++(BOOL)_toolsDebugColorViewBounds;
++(void)_enableToolsDebugColorViewBounds:(BOOL)flag;
+@end
+
 @implementation AppDelegate
 @synthesize window;
 

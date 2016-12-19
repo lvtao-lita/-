@@ -22,6 +22,7 @@
 
 @property(copy,nonatomic) NSString *userName;
 
+
 + (id)sharedInstance;
 
 @end

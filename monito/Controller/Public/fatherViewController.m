@@ -196,14 +196,28 @@
     dateFomatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
     NSString * nowDateStr = [dateFomatter stringFromDate:nowDate];
     [NetworkRequests requestWithparameters:parameter andWithURL:url Success:^(NSDictionary *dic) {
-        NSLog(@"%@",dic);
         NSMutableArray * cellAy = [[NSMutableArray alloc]init];
         for (NSDictionary *obj in dic[@"obj"]) {
             dateSource * data = [[dateSource alloc]init];
-            data.companyName = [NSString stringWithFormat:@"%@",obj[@"place_name"]];
-            data.centerTxet = [NSString stringWithFormat:@"%@|%@|%@",obj[@"business_code"],obj[@"envi_type"],obj[@"monitor_type"]];
-            data.bottomTxet = [NSString stringWithFormat:@"%@|%@|%@",obj[@"task_code"],obj[@"entity_name"],obj[@"flow_state"]];
-            data.dateText = [NSString stringWithFormat:@"%@",obj[@"date_begin"]];
+            data.companyName = [NSString stringWithFormat:@"%@(%@)",obj[@"device_name"],obj[@"equipment_number"]];
+            NSArray * strAy = [obj[@"should_also_date"] componentsSeparatedByString:@" "];
+            data.centerTxet = [NSString stringWithFormat:@"%@|%@|应还日期(%@)",obj[@"leading_personnel"],obj[@"department"],strAy[0]];
+            
+            if ([obj[@"state"] isEqualToString:@"借出"]) {
+                timeCalculateNS * time = [[timeCalculateNS alloc]init];
+                [time timeCalculateWithnewdate:nowDateStr toWithOlddate:obj[@"should_also_date"]];
+                NSInteger timeD = time.year*365+time.month*30+time.day;
+                if (timeD < 0) {
+                    data.bottomTxet = [NSString stringWithFormat:@"归还期限（%ld天）",-(long)timeD];
+                }else{
+                    data.bottomTxet = [NSString stringWithFormat:@"未归还（超时%ld天）",(long)timeD];
+                }
+            }else if ([obj[@"state"] isEqualToString:@"归还"]){
+                data.bottomTxet = [NSString stringWithFormat:@"归还日期（%@）",obj[@"return_date"]];
+            }
+            NSArray * dateAy = [obj[@"lending_date"] componentsSeparatedByString:@" "];
+            data.dateText = [NSString stringWithFormat:@"借出日期(%@)",dateAy[0]];
+            
             [cellAy addObject:data];
         }
         sourceAy = [[NSArray alloc]initWithArray:cellAy];

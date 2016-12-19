@@ -9,7 +9,10 @@
 #import "LT_inventoryViewController.h"
 #import "PrefixHeader.pch"
 @interface LT_inventoryViewController (){
-    NSArray * sourceAy;
+    NSMutableArray * sourceAy;
+    UITextField * keyword;
+    mytableView * tableView;
+    NSMutableDictionary * dic1;
 }
 
 @end
@@ -26,12 +29,14 @@
     [self creatUI];
 }
 -(void)creatDataSource{
-    NSDictionary * dic = @{@"companyName":@"佛山市金刚石工具首饰有限公司",@"centerTxet":@"委托合同｜委托检测｜电磁辐射｜T20161121013",@"bottomTxet":@"采样管理｜一般｜管理员",@"dateText":@"2016-11-11"};
-    NSMutableArray * arr = [[NSMutableArray alloc]init];
-    for (int i = 0; i < 6; i++) {
-        [arr addObject:dic];
-    }
-    sourceAy = [[NSArray alloc]initWithArray:arr];
+    loginSource * logSource =[loginSource sharedInstance];
+    dic1 = [[NSMutableDictionary alloc]init];
+    [dic1 setObject:@"" forKey:@"keyword"];
+    [dic1 setObject:@"10" forKey:@"limit"];
+    [dic1 setObject:@"1" forKey:@"start"];
+    [dic1 setObject:logSource.password forKey:@"password"];
+    [dic1 setObject:logSource.userName forKey:@"username"];
+    [self requstion];
 }
 
 -(void)creatUI{
@@ -39,7 +44,7 @@
     inquire.frame = CGRectMakeRelative(10, 0, 100, 60);
     inquire.text = @"查询条件";
     
-    UITextField * keyword = [[UITextField alloc]init];
+    keyword = [[UITextField alloc]init];
     keyword.frame = CGRectMakeRelative(0, 60, 375, 60);
     [self setTextfiled:keyword leftViewname:@"关 键 字："];
     
@@ -47,7 +52,7 @@
     dateList.frame = CGRectMakeRelative(10, 120, 375, 60);
     dateList.text = @"数据列表";
     
-    mytableView * tableView = [[mytableView alloc]init];
+    tableView = [[mytableView alloc]init];
     tableView.sourceAy = sourceAy;
     tableView.frame = CGRectMakeRelative(0, 180, 375, 427);
     
@@ -67,8 +72,34 @@
     tf.leftView = view;
     [self.view addSubview:tf];
 }
+#warning 未达安全库存量判断条件未知
+-(void)requstion{
+    NSDictionary *parameter = [NSDictionary dictionaryWithDictionary:dic1];
+    [NetworkRequests requestWithparameters:parameter andWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/ReagentSvc.asmx/reagentList" Success:^(NSDictionary *dic) {
+        NSMutableArray * cellAy = [[NSMutableArray alloc]init];
+        for (NSDictionary *obj in dic[@"obj"]) {
+            dateSource * data = [[dateSource alloc]init];
+            data.companyName = [NSString stringWithFormat:@"%@(%@)",obj[@"reagent_type_name"],obj[@"reagent_name"]];
+            data.centerTxet = [NSString stringWithFormat:@"%@|%@",obj[@"gb_code"],obj[@"toxicity_level_name"]];
+            data.bottomTxet = [NSString stringWithFormat:@"库存量 %@",obj[@"inventory_count"]];
+            data.dateText = [NSString stringWithFormat:@"未达安全存量"];
+            [cellAy addObject:data];
+        }
+        tableView.sourceAy = cellAy;
+        [tableView reloadData];
+        
+    } failure:^(NSDictionary *dic) {
+        NSLog(@"请求失败%@",dic[@"msg"]);
+    }];
+}
 -(void)inquire{
-    NSLog(@"点击查询");
+    loginSource * logSource =[loginSource sharedInstance];
+    dic1 = [[NSMutableDictionary alloc]init];
+    [dic1 setObject:keyword.text forKey:@"keyword"];
+    [dic1 setObject:logSource.password forKey:@"password"];
+    [dic1 setObject:logSource.userName forKey:@"username"];
+    [self requstion];
+    NSLog(@"物质库存查询");
 }
 CG_INLINE CGRect
 CGRectMakeRelative(CGFloat x,CGFloat y,CGFloat width,CGFloat height)

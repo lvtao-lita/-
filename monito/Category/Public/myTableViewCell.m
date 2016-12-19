@@ -20,11 +20,12 @@
         self.centerLabel.font = [UIFont systemFontOfSize:12];
         self.centerLabel.tintColor = [UIColor grayColor];
         self.bottomLabel = [[UILabel alloc]init];
-        self.bottomLabel.frame = CGRectMakeRelative(0, 60, 180, 30);
+        self.bottomLabel.frame = CGRectMakeRelative(0, 60, 190, 30);
         self.bottomLabel.font = [UIFont systemFontOfSize:12];
         self.bottomLabel.tintColor = [UIColor grayColor];
         self.dateLabel = [[UILabel alloc]init];
-        self.dateLabel.frame = CGRectMakeRelative(265, 60, 110, 30);
+        self.dateLabel.frame = CGRectMakeRelative(185, 60, 185, 30);
+        self.dateLabel.textAlignment = NSTextAlignmentRight;
         self.dateLabel.tintColor = [UIColor grayColor];
         [self.contentView addSubview:self.companyName];
         [self.contentView addSubview:self.centerLabel];
