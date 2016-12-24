@@ -26,7 +26,7 @@
     
 }
 -(void)creatDataSuorce{
-    [self requstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Sample/SampleJioFarm.aspx"];
+    [self requstWithURL:self.url];
 }
 -(void)requstWithURL:(NSString *)url{
     NSLog(@"%@",self.parameter);

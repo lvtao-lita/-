@@ -8,7 +8,7 @@
 #import "loginRecord.h"
 #import "NSString+subAppend.h"
 #import "loginSource.h"
-@interface ViewController (){
+@interface ViewController ()<UITextFieldDelegate>{
     NSString * pswStr;
     
 }
@@ -37,6 +37,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.userName.delegate = self;
+    self.pastword.delegate = self;
+    self.outIP.delegate    = self;
+    self.intIP.delegate    = self;
     // Do any additional setup after loading the view, typically from a nib.
     [self.passtwordBtn setImage:[UIImage imageNamed:@"select.png"] forState:UIControlStateSelected];
     [self.outIPBtn setImage:[UIImage imageNamed:@"select.png"] forState:UIControlStateSelected];
@@ -170,11 +174,9 @@
         [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil]];
         [self presentViewController:alert animated:YES completion:nil];
     }];
-    
-    
-
-
-    
 }
-
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
+}
 @end

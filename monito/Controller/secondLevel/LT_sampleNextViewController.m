@@ -9,6 +9,8 @@
 #import "LT_sampleNextViewController.h"
 #import "AppDelegate.h"
 #import "LT_positionViewController.h"
+#import "LT_oneWebViewController.h"
+#import "NetworkRequests.h"
 @interface LT_sampleNextViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
     UIImagePickerController * PickerCon;
 }
@@ -19,16 +21,100 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.OPView.flowBtn.tag =1;
+    self.OPView.sendBtn.tag =2;
+    self.OPView.transmitBtn.tag =3;
+    NSLog(@"%lu",[self.scrollView subviews].count);
 }
+-(void)viewDidAppear:(BOOL)animated{
+    NSLog(@"%lu",[self.scrollView subviews].count);
+}
+
 -(void)creatrightBarButtonItem{
     UIBarButtonItem * rightBtn1 = [[UIBarButtonItem alloc]initWithTitle:@"定位" style:UIBarButtonItemStyleDone target:self action:@selector(location:)];
     UIBarButtonItem * rightBtn2 = [[UIBarButtonItem alloc]initWithTitle:@"拍照" style:UIBarButtonItemStyleDone target:self action:@selector(photograph:)];
     NSArray * arr = @[rightBtn2,rightBtn1];
     self.navigationItem.rightBarButtonItems = arr;
 }
+#pragma mark - 重写点击事件
+-(void)clickButton:(UIButton *)btn{
+    
+    NSMutableDictionary * parameter = [[NSMutableDictionary alloc]init];
+    [parameter setObject:@"Edit" forKey:@"CMD"];
+    [parameter setObject:self.parameter[@"EntityName"] forKey:@"EntityName"];
+    [parameter setObject:self.parameter[@"FlowInsId"] forKey:@"FlowInsID"];
+    [parameter setObject:self.parameter[@"LinkInsId"] forKey:@"LinkInsId"];
+    [parameter setObject:self.parameter[@"sessionid"] forKey:@"SessionId"];
+    [parameter setObject:self.parameter[@"TaskSceneId"] forKey:@"TaskSceneId"];
+    [parameter setObject:self.parameter[@"UserId"] forKey:@"UserId"];
+    [parameter setObject:self.parameter[@"business_id"] forKey:@"business_id"];
+    if ([btn.titleLabel.text isEqualToString:@"基本"]) {
+        [self requstWebviewWithName:0 andParameter:parameter andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Sample/SampleFarm.aspx"];
+        
+    }else if ([btn.titleLabel.text isEqualToString:@"现场"]){
+        [self requstWebviewWithName:1 andParameter:parameter andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Sample/SampleFarmComm.aspx"];
+    }else if ([btn.titleLabel.text isEqualToString:@"工况"]){
+        [self requstWebviewWithName:2 andParameter:parameter andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Sample/Condition.aspx"];
+    
+    }else if ([btn.titleLabel.text isEqualToString:@"绘图"]){
+        [self requstWebviewWithName:3 andParameter:parameter andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Sample/SampleFile/SampleFile.aspx"];
+    }
+}
+-(void)operate:(UIButton *)btn{
+    NSDictionary * parameterDic = [[NSDictionary alloc]init];
+    LT_oneWebViewController * oneWebCon = [[LT_oneWebViewController alloc]init];
+    if (btn.tag == 1) {
+        NSMutableDictionary * dic = [[NSMutableDictionary alloc]init];
+        [dic setObject:self.parameter[@"sessionid"] forKey:@"SessionId"];
+        [dic setObject:self.parameter[@"business_id"] forKey:@"BusinessId"];
+        [dic setObject:self.parameter[@"FlowInsId"] forKey:@"FlowInsId"];
+        [dic setObject:self.parameter[@"LinkInsId"] forKey:@"LinkInsId"];
+        [dic setObject:self.parameter[@"link_ins_id"] forKey:@"link_ins_id"];
+        parameterDic = dic;
+        oneWebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/WorkFlow/FlowLogMon.aspx";
+        NSLog(@"流程");
+    }else if (btn.tag ==2){
+        NSMutableDictionary * dic = [[NSMutableDictionary alloc]init];
+        [dic setObject:self.parameter[@"sessionid"] forKey:@"SessionId"];
+        [dic setObject:self.parameter[@"UserCName"] forKey:@"UserCName"];
+        [dic setObject:self.parameter[@"FlowInsId"] forKey:@"FlowInsId"];
+        [dic setObject:self.parameter[@"LinkInsId"] forKey:@"LinkInsId"];
+        [dic setObject:self.parameter[@"UserCode"] forKey:@"UserCode"];
+        [dic setObject:self.parameter[@"UserId"] forKey:@"UserId"];
+        NSLog(@"发送");
+        parameterDic = dic;
+        oneWebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/WorkFlow/NewVersion/TaskSubmit.aspx";
+    }else if (btn.tag ==3){
+        NSMutableDictionary * dic = [[NSMutableDictionary alloc]init];
+        [dic setObject:self.parameter[@"sessionid"] forKey:@"SessionId"];
+        [dic setObject:self.parameter[@"UserCName"] forKey:@"UserCName"];
+        [dic setObject:self.parameter[@"FlowInsId"] forKey:@"FlowInsId"];
+        [dic setObject:self.parameter[@"LinkInsId"] forKey:@"LinkInsId"];
+        [dic setObject:self.parameter[@"UserCode"] forKey:@"UserCode"];
+        [dic setObject:self.parameter[@"UserId"] forKey:@"UserId"];
+        NSLog(@"转办");
+        parameterDic = dic;
+        oneWebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/WorkFlow/NewVersion/TaskSpanBack.aspx";
+    }
+    
+    oneWebCon.parameter = parameterDic;
+    [self.navigationController pushViewController:oneWebCon animated:YES];
+    
+}
+-(void)requstWebviewWithName:(int)name
+                andParameter:(NSDictionary *)parameter
+                      andURL:(NSString *)url{
+    NSArray * webView = [self.scrollView subviews];
+    [NetworkRequests requestWebWithparameters:parameter andWithURL:url Success:^(NSString *str) {
+        UIWebView * temp = webView[name];
+        [temp loadHTMLString:str baseURL:nil];
+        
+    } failure:^(NSDictionary *dic) {
+        
+    }];
+}
 
 -(void)location:(UIButton *)btn{
-    NSLog(@"location");
     LT_positionViewController * position = [[LT_positionViewController alloc]init];
     [self.navigationController pushViewController:position animated:YES];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
@@ -37,7 +123,6 @@
 }
 
 -(void)photograph:(UIButton *)btn{
-    NSLog(@"pai zhao");
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
         [self openIamgePicKer:UIImagePickerControllerSourceTypeCamera];
     }else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]){

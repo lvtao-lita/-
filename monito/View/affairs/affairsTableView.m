@@ -47,7 +47,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     LT_WebViewController * next = [[LT_WebViewController alloc]init];
     next.BtnAy = @[@"公文信息",@"附件信息"];
-    next.URLAy = @[@"http://www.baidu.com",@"http://www.360.com"];
+    next.URLAy = @"http://www.baidu.com";
     [[self viewController].navigationController pushViewController:next animated:YES];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
     backItem.title = @"";

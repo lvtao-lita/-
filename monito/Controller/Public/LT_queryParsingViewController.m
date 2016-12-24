@@ -17,6 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self creatView];
+    self.view.backgroundColor = [UIColor grayColor];
 }
 -(void)creatView{
     self.btnview = [[UIView alloc]initWithFrame:CGRectMakeRelative(0, 0, 375, 603)];
@@ -25,7 +26,7 @@
         for (int j = 0; j < 3; j++) {
             UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMakeRelative(0+j*126, 0+121.6*i, 125, 120.6)];
             
-            [btn setImageEdgeInsets:UIEdgeInsetsMake(10, btn.frame.size.width/4, btn.frame.size.height/3, btn.frame.size.width/4)];
+            [btn setImageEdgeInsets:UIEdgeInsetsMake(15, btn.frame.size.width/4, btn.frame.size.height/3, btn.frame.size.width/4)];
             btn.backgroundColor = [UIColor whiteColor];
             [_btnview addSubview:btn];
         }

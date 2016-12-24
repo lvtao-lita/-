@@ -93,6 +93,7 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     LT_oneWebViewController * WebCon = [[LT_oneWebViewController alloc]init];
+    WebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/Sample/SampleJioFarm.aspx";
     WebCon.parameter =parameter[indexPath.row];
     [self.navigationController pushViewController:WebCon animated:YES];
     

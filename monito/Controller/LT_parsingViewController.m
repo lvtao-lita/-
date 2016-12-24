@@ -23,7 +23,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     queryTitleAy = @[@"废水",@"废气",@"水环境",@"声环境",@"在线监测"];
-    queryImageAy = @[@"",@"",@"",@"",@""];
+    queryImageAy = @[@"pie",@"gauge",@"line",@"bar",@"scatter"];
     queryurlAy   = @[@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/Pollution/Pollution.aspx",@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/Pollution/PollutionGas.aspx",@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/Water/Water.aspx",@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/Noise/Noise.aspx",@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/Online/Online.aspx"];
     [self setBtn];
 }
@@ -32,9 +32,7 @@
     for (int i = 0 ; i<queryTitleAy.count; i++) {
         UIButton *btn = [self.btnview.subviews objectAtIndex:i];
         btn.tag = i+1;
-        [btn setImage:[UIImage imageNamed:@"quality.png"] forState:UIControlStateNormal];
-        //        NSLog(@"self.view.subviews-%lu",(unsigned long)self.btnview.subviews.count);
-        //        [btn setTitle:queryTitleAy[i] forState:UIControlStateNormal];
+        [btn setImage:[UIImage imageNamed:queryImageAy[i]] forState:UIControlStateNormal];
         UILabel * lab = [[UILabel alloc]initWithFrame:CGRectMakeRelative(0, 80, 120.6, 40)];
         lab.text = queryTitleAy[i];
         lab.textAlignment = NSTextAlignmentCenter;

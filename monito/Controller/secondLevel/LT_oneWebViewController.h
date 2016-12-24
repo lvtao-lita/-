@@ -10,4 +10,5 @@
 
 @interface LT_oneWebViewController : UIViewController
 @property(strong,nonatomic) NSDictionary * parameter;
+@property(strong,nonatomic) NSString * url;
 @end

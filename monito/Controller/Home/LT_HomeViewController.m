@@ -40,7 +40,8 @@
         for (NSDictionary *obj in dic[@"obj"]) {
             [tittleAy addObject:obj[@"M_CName"]];
         }
-        [collection datasourcetittle:tittleAy andimge:nil];
+        NSArray *imgAy = @[@"menu_4.png",@"menu_03",@"menu_1",@"menu_05",@"menu_2",@"menu_3",@"menu_3",@"menu_3",@"menu_6",@"menu_05",@"menu_04",@"menu_06",@"menu_4",@"menu_1",@"menu_3",@"menu_7"];
+        [collection datasourcetittle:tittleAy andimge:imgAy];
         [collection reloadData];
     } failure:^(NSDictionary *dic) {
         NSLog(@"失败:%@",dic);
@@ -68,6 +69,7 @@
     HomeWeb.frame = CGRectMakeRelative(0, 0, 375, 220);
     
     collection = [[LT_HomeCollection alloc]init];
+    
     [collection datasourcetittle:tittleAy andimge:nil];
     collection.frame = CGRectMakeRelative(0, 223, 375, 444);
     [self.view addSubview:HomeWeb];
@@ -81,6 +83,7 @@
     NSString * name = log.obj[@"U_LoginName"];
     NSString *url = [NSString stringWithFormat:@"http://120.24.7.178/fshb/Manager/MobileSvc/SceneAnalysis.aspx?UserName=%@",name];
     [HomeWeb loadHomeWev:url];
+    [self creatSource];
 }
 
 

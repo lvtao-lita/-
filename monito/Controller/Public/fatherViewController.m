@@ -9,10 +9,12 @@
 #import "fatherViewController.h"
 #import "dateSource.h"
 #import "timeCalculateNS.h"
+#import "LT_sampleNextViewController.h"
 #import "PrefixHeader.pch"
-@interface fatherViewController (){
+@interface fatherViewController ()<UITableViewDelegate>{
     NSArray * sourceAy;
     NSMutableDictionary * dic1;
+    NSMutableArray * parameterAy;
 }
 
 @end
@@ -28,7 +30,6 @@
     UIBarButtonItem * rightBtn = [[UIBarButtonItem alloc]initWithTitle:@"查询" style:UIBarButtonItemStyleDone target:self action:@selector(inquire)];
     self.navigationItem.rightBarButtonItem = rightBtn;
     self.view.backgroundColor = [UIColor colorWithRed:219.0/255 green:219.0/255 blue:219.0/255 alpha:1];
-    
     [self creatUI];
     [self creatDataSource];
 }
@@ -81,6 +82,7 @@
     
 
     _tableView = [[mytableView alloc]init];
+    _tableView.delegate = self;
     _tableView.frame = CGRectMakeRelative(0, 200, 375, 403);
     
     [self.view addSubview:inquire];
@@ -129,15 +131,35 @@
 -(void)requestWithURL:(NSString *)url{
     NSMutableArray * cellAy = [[NSMutableArray alloc]init];
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
-        NSLog(@"%@",dic);
-        
+        parameterAy = [[NSMutableArray alloc]init];
+        loginSource * logSource = [loginSource sharedInstance];
         for (NSDictionary *obj in dic[@"obj"]) {
+            NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc]init];
+            [parameterDic setObject:logSource.userName forKey:@"username"];
+            [parameterDic setObject:logSource.password forKey:@"password"];
+            [parameterDic setObject:logSource.obj[@"UserID"] forKey:@"UserId"];
+            [parameterDic setObject:logSource.userName forKey:@"UserCName"];
+            
+            [parameterDic setObject:obj[@"task_id"] forKey:@"sessionid"];
+            [parameterDic setObject:obj[@"task_scene_id"] forKey:@"TaskSceneId"];
+            [parameterDic setObject:obj[@"link_def_id"] forKey:@"linkdefid"];
+            [parameterDic setObject:obj[@"flow_ins_id"] forKey:@"FlowInsId"];
+#warning LinkInsId 和 link_ins_id
+            [parameterDic setObject:obj[@"link_ins_id"] forKey:@"LinkInsId"];
+            [parameterDic setObject:obj[@"link_ins_id"] forKey:@"link_ins_id"];
+#warning UserCName 和 UserCode
+            [parameterDic setObject:obj[@"started_user_name"] forKey:@"UserCode"];
+            [parameterDic setObject:obj[@"business_id"] forKey:@"business_id"];
+            
+            [parameterDic setObject:obj[@"flow_code"] forKey:@"flowcode"];
+            [parameterDic setObject:obj[@"entity_name"] forKey:@"EntityName"];
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@",obj[@"monitor_unit_name"]];
             data.centerTxet = [NSString stringWithFormat:@"%@|%@|%@|%@",obj[@"envi_type"],obj[@"monitor_name"],obj[@"entity_name"],obj[@"task_code"]];
             data.bottomTxet = [NSString stringWithFormat:@"%@|%@|%@",obj[@"link_name"],obj[@"link_ins_level"],obj[@"started_user_name"]];
             data.dateText = [NSString stringWithFormat:@"%@",obj[@"started_time"]];
             [cellAy addObject:data];
+            [parameterAy addObject:parameterDic];
         }
         sourceAy = [[NSArray alloc]initWithArray:cellAy];
         _tableView.sourceAy = sourceAy;
@@ -249,6 +271,26 @@
     }];
 
 
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if ([self.title isEqual:@"采样信息"]) {
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        LT_sampleNextViewController * sampleNextCon = [[LT_sampleNextViewController alloc]init];
+        sampleNextCon.BtnAy = @[@"基本",@"现场",@"工况",@"绘图",@"附件",@"操作"];
+        sampleNextCon.parameter = parameterAy[indexPath.row];
+        [self.navigationController pushViewController:sampleNextCon animated:YES];
+    }else if ([self.title isEqual:@"监测报告"]){
+            LT_MonitoringReportNextViewController * next = [[LT_MonitoringReportNextViewController alloc]init];
+            next.BtnAy = @[@"报告",@"监测",@"现场",@"附件",@"操作"];
+            [self.navigationController pushViewController:next animated:YES];
+    }
+    
+    
+    
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    AppDelegate * app = (id)[UIApplication sharedApplication].delegate;
+    return 90*app.autoSizeScaleY;
 }
 //创建内联函数 (在程序编译的时候执行,在函数前声明后编译器执行起来更具效率，使宏的定义更节省，不涉及栈的操作)
 CG_INLINE CGRect

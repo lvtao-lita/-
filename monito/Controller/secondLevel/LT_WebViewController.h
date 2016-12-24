@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "operateView.h"
 @interface LT_WebViewController : UIViewController
 @property (strong,nonatomic) NSArray * BtnAy;
-@property (copy,nonatomic) NSString * URLAy;
+@property (copy,nonatomic)   NSString * URLAy;
+@property (strong,nonatomic) UIScrollView * scrollView;
+@property (strong,nonatomic) NSDictionary * parameter;
+@property (strong,nonatomic) operateView * OPView;
 
 -(void)creatrightBarButtonItem;
 -(void)creatloadItem;

@@ -13,7 +13,7 @@
 @implementation MyCollectionViewCell
 -(instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
-        self.Imageiv = [[UIImageView alloc]initWithFrame:CGRectMakeRelative(26,10, 40.5, 51)];
+        self.Imageiv = [[UIImageView alloc]initWithFrame:CGRectMakeRelative(23,10, 46.5, 51)];
         self.label = [[UILabel alloc] initWithFrame:CGRectMakeRelative(0,61, 92.5, 31.5)];
         self.label.textColor =[UIColor grayColor];
         self.label.textAlignment = NSTextAlignmentCenter;

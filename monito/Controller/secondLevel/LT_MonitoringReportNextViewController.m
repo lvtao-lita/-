@@ -22,6 +22,10 @@
 -(void)loadReport:(UIBarButtonItem *)btn{
     NSLog(@"loadReport");
 }
+#pragma mark - 重写点击事件
+-(void)clickButton:(UIButton *)btn{
+    NSLog(@"!!!!!!!!!!!");
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

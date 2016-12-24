@@ -7,9 +7,11 @@
 //
 
 #import "LT_WebViewController.h"
+#import "AppDelegate.h"
 #import "PrefixHeader.pch"
+
 @interface LT_WebViewController ()<UIScrollViewDelegate>{
-    UIScrollView * scrollView;
+    
     navBottomBtnView * view;
     NSArray * Btnarr;
 }
@@ -20,12 +22,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor =[UIColor grayColor];
     [self creatScrollView:self.BtnAy];
     [self creatBtn:self.BtnAy];
     [self creatWeb:self.BtnAy];
     [self addClik];
    
 }
+
 -(void)creatrightBarButtonItem{
     UIBarButtonItem * rightBtn1 = [[UIBarButtonItem alloc]initWithTitle:@"二维码" style:UIBarButtonItemStyleDone target:self action:@selector(QRcode:)];
     self.navigationItem.rightBarButtonItem = rightBtn1;
@@ -94,49 +98,92 @@
     
 }
 -(void)creatScrollView:(NSArray *)arr{
-    scrollView = [[UIScrollView alloc]init];
-    scrollView.delegate = self;
-    if (arr.count > 1) {
-        scrollView.frame = CGRectMakeRelative(0, 50, 375, 553);
-        scrollView.contentSize = CGSizeMake(375*arr.count, 553);
-    }else{
-        scrollView.frame = CGRectMakeRelative(0, 0, 375, 603);
-        scrollView.contentSize = CGSizeMake(375*arr.count, 603);
-    }
+    _scrollView = [[UIScrollView alloc]init];
+    _scrollView.delegate = self;
+    _scrollView.pagingEnabled = YES;
     
-    [self.view addSubview:scrollView];
+    if (arr.count > 1) {
+        _scrollView.frame = CGRectMakeRelative(0, 50, 375, 553);
+        _scrollView.contentSize = CGSizeMake(375*arr.count, 553);
+    }else{
+        _scrollView.frame = CGRectMakeRelative(0, 0, 375, 603);
+        _scrollView.contentSize = CGSizeMake(375*arr.count, 603);
+    }
+    [self.view addSubview:_scrollView];
     
 }
 -(void)creatWeb:(NSArray *)arr{
     if (arr.count > 1) {
         for (int i = 0; i < arr.count; i++) {
-            UIWebView * WebView = [[UIWebView alloc]init];
-            WebView.tag = i+1;
-            WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
-            [self loadWeb:WebView andUrl:self.URLAy];
-            [scrollView addSubview:WebView];
+            if([arr[i] isEqualToString:@"操作"]){
+                _OPView = [[operateView alloc]init];
+                _OPView.frame = CGRectMakeRelative(375*i, 4, 375, 553);
+                [_scrollView addSubview:_OPView];
+                [_OPView.flowBtn addTarget:self action:@selector(operate:) forControlEvents:UIControlEventTouchUpInside];
+                [_OPView.sendBtn addTarget:self action:@selector(operate:) forControlEvents:UIControlEventTouchUpInside];
+                [_OPView.transmitBtn addTarget:self action:@selector(operate:) forControlEvents:UIControlEventTouchUpInside];
+            }else if ([arr[i] isEqualToString:@"基本"]) {
+                UIWebView * WebView = [[UIWebView alloc]init];
+                WebView.tag = i+1;
+                WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
+                [_scrollView addSubview:WebView];
+            }else if ([arr[i] isEqualToString:@"现场"]){
+                UIWebView * WebView = [[UIWebView alloc]init];
+                WebView.tag = i+1;
+                WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
+                [_scrollView addSubview:WebView];
+            }else if ([arr[i] isEqualToString:@"工况"]){
+                UIWebView * WebView = [[UIWebView alloc]init];
+                WebView.tag = i+1;
+                WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
+                [_scrollView addSubview:WebView];
+            }else if ([arr[i] isEqualToString:@"绘图"]){
+                UIWebView * WebView = [[UIWebView alloc]init];
+                WebView.tag = i+1;
+                WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
+                [_scrollView addSubview:WebView];
+            }else if ([arr[i] isEqualToString:@"附件"]){
+                UIWebView * WebView = [[UIWebView alloc]init];
+                WebView.tag = i+1;
+                WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
+                [_scrollView addSubview:WebView];
+            }else if ([arr[i] isEqualToString:@"报告"]){
+                UIWebView * WebView = [[UIWebView alloc]init];
+                WebView.tag = i+1;
+                WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
+                [_scrollView addSubview:WebView];
+            }else if ([arr[i] isEqualToString:@"监测"]){
+                UIWebView * WebView = [[UIWebView alloc]init];
+                WebView.tag = i+1;
+                WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
+                [_scrollView addSubview:WebView];
+            }else if ([arr[i] isEqualToString:@"报告"]){
+                UIWebView * WebView = [[UIWebView alloc]init];
+                WebView.tag = i+1;
+                WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
+                [_scrollView addSubview:WebView];
+            }
         }
-    }else{
-        UIWebView * WebView = [[UIWebView alloc]init];
-        WebView.tag = 1;
-        WebView.frame =CGRectMakeRelative(0, 0, 375, 603);
-        [self loadWeb:WebView andUrl:self.URLAy];
-        [scrollView addSubview:WebView];
     }
 }
--(void)loadWeb:(UIWebView *)WebView andUrl:(NSString *)url{
-    NSURL * Url = [NSURL URLWithString:url];
-    NSURLRequest * requst = [NSURLRequest requestWithURL:Url];
-    [WebView loadRequest:requst];
+-(void)operate:(UIButton *)btn{
+
 }
 -(void)addClik{
+    
     Btnarr = [[NSArray alloc]initWithArray:view.subviews];
     for (int i = 0; i < Btnarr.count; i++) {
         [Btnarr[i] addTarget:self action:@selector(clik:) forControlEvents:UIControlEventTouchUpInside];
+        UIButton * btn = Btnarr[i];
+        if ([btn.titleLabel.text isEqualToString:@"基本"]) {
+            [Btnarr[i] sendActionsForControlEvents:UIControlEventTouchUpInside];
+        }
     }
+    
 }
 //点击事件
 -(void)clik:(UIButton *)btn{
+    Btnarr = [[NSArray alloc]initWithArray:view.subviews];
     NSLog(@"点击事件 %@",btn.titleLabel.text);
     UIView * vi= [self.view viewWithTag:10];
     for (int i = 0; i < vi.subviews.count; i++) {
@@ -146,21 +193,21 @@
             vi.subviews[i].backgroundColor = [UIColor whiteColor];
         }
     }
+    _scrollView.contentOffset = CGPointMake(btn.frame.origin.x/btn.frame.size.width*self.view.frame.size.width, 0);
 
-    scrollView.contentOffset = CGPointMake(btn.frame.origin.x/btn.frame.size.width*self.view.frame.size.width, 0);
-    
     if (btn.selected == YES) {
         
     }else{
         for (int i = 0; i < Btnarr.count; i++) {
             if (btn != Btnarr[i]) {
-                [Btnarr[i] setValue:@"NO" forKey:@"selected"];
-                [Btnarr[i] setValue:@"YES" forKey:@"enabled"];
+                UIButton * temp = Btnarr[i];
+                temp.selected = NO;
+                temp.enabled  = YES;
             }
         }
         btn.selected = YES;
-        
     }
+   
     //btn  超过5个
     if ((Btnarr.count > 5)&&(btn.frame.origin.x<=btn.frame.size.width*2)) {
         view.frame = CGRectMakeRelative(0, 0, 375, 50);
@@ -170,20 +217,46 @@
         view.frame = CGRectMakeRelative(-btn.frame.size.width, 0, self.BtnAy.count*75, 50);
         vi.frame = CGRectMakeRelative(-btn.frame.size.width, 50, self.BtnAy.count*75, 3);
     }
+    
+    [self clickButton:btn];
+}
+-(void)clickButton:(UIButton *)btn{
+    
 }
 
 //滚动协议
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     // called when scroll view grinds to a halt
     UIView * vi= [self.view viewWithTag:10];
+    NSArray * btn = [view subviews];
     for (int i = 0; i < vi.subviews.count; i++) {
         if ((vi.subviews[i].frame.origin.x/vi.subviews[i].frame.size.width) == (scrollView.contentOffset.x/scrollView.frame.size.width)) {
             vi.subviews[i].backgroundColor = [UIColor redColor];
+            //btn  超过5个
+            UIButton * Btn = btn[i];
+            if ((Btnarr.count > 5)&&(Btn.frame.origin.x==Btn.frame.size.width*2)) {
+                view.frame = CGRectMakeRelative(0, 0, 375, 50);
+                vi.frame = CGRectMakeRelative(0, 50, 375, 3);
+            }
+            if ((Btnarr.count > 5)&&(Btn.frame.origin.x==Btn.frame.size.width*3)) {
+                view.frame = CGRectMakeRelative(-Btn.frame.size.width, 0, self.BtnAy.count*75, 50);
+                vi.frame = CGRectMakeRelative(-Btn.frame.size.width, 50, self.BtnAy.count*75, 3);
+            }
+            for (int j=0; j<btn.count; j++) {
+                
+                if (j==i) {
+                    [btn[j] setValue:@"YES" forKey:@"selected"];
+                }else{
+                    [btn[j] setValue:@"NO" forKey:@"selected"];
+                }
+                
+                
+            }
         }else{
             vi.subviews[i].backgroundColor = [UIColor whiteColor];
         }
     }
-    NSLog(@"已经减速结束时调用");
+    
 }
 
 CG_INLINE CGRect

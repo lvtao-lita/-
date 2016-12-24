@@ -21,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     queryTitleAy = @[@"应急预案",@"质量手册",@"程序文件",@"作业指导书",@"环境标准",@"分析方法"];
-    queryImageAy = @[@"",@"",@"",@"",@"",@""];
+    queryImageAy = @[@"menu_2",@"menu_04",@"menu_03",@"menu_06",@"menu_1",@"menu_05"];
     [self setBtn];
 }
 
@@ -29,7 +29,7 @@
     for (int i = 0 ; i<queryTitleAy.count; i++) {
         UIButton *btn = [self.btnview.subviews objectAtIndex:i];
         btn.tag = i+1;
-        [btn setImage:[UIImage imageNamed:@"quality.png"] forState:UIControlStateNormal];
+        [btn setImage:[UIImage imageNamed:queryImageAy[i]] forState:UIControlStateNormal];
 //        NSLog(@"self.view.subviews-%lu",(unsigned long)self.btnview.subviews.count);
 //        [btn setTitle:queryTitleAy[i] forState:UIControlStateNormal];
         UILabel * lab = [[UILabel alloc]initWithFrame:CGRectMakeRelative(0, 80, 120.6, 40)];
