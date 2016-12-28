@@ -14,6 +14,7 @@
 @property (strong,nonatomic) UIScrollView * scrollView;
 @property (strong,nonatomic) NSDictionary * parameter;
 @property (strong,nonatomic) operateView * OPView;
+@property (assign,nonatomic) int flag;
 
 -(void)creatrightBarButtonItem;
 -(void)creatloadItem;

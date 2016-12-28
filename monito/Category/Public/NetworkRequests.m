@@ -85,6 +85,9 @@
 +(void)requestWebWithparameters:(NSDictionary *)dic andWithURL:(NSString *)url Success:(void (^)(NSString * str))success failure:(void (^)(NSDictionary * dic))failure{
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
     NSURLSessionDataTask * task = [manager POST:url parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         

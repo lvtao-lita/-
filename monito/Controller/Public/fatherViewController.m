@@ -138,7 +138,7 @@
             [parameterDic setObject:logSource.userName forKey:@"username"];
             [parameterDic setObject:logSource.password forKey:@"password"];
             [parameterDic setObject:logSource.obj[@"UserID"] forKey:@"UserId"];
-            [parameterDic setObject:logSource.userName forKey:@"UserCName"];
+            [parameterDic setObject:logSource.userName forKey:@"UserCode"];
             
             [parameterDic setObject:obj[@"task_id"] forKey:@"sessionid"];
             [parameterDic setObject:obj[@"task_scene_id"] forKey:@"TaskSceneId"];
@@ -148,7 +148,7 @@
             [parameterDic setObject:obj[@"link_ins_id"] forKey:@"LinkInsId"];
             [parameterDic setObject:obj[@"link_ins_id"] forKey:@"link_ins_id"];
 #warning UserCName 和 UserCode
-            [parameterDic setObject:obj[@"started_user_name"] forKey:@"UserCode"];
+            [parameterDic setObject:obj[@"started_user_name"] forKey:@"UserCName"];
             [parameterDic setObject:obj[@"business_id"] forKey:@"business_id"];
             
             [parameterDic setObject:obj[@"flow_code"] forKey:@"flowcode"];
@@ -172,15 +172,34 @@
 //监测报告
 -(void)MonitoringReportRequstWithURL:(NSString *)url{
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
-        NSLog(@"%@",dic);
+        parameterAy = [[NSMutableArray alloc]init];
+        loginSource * logSource = [loginSource sharedInstance];
         NSMutableArray * cellAy = [[NSMutableArray alloc]init];
         for (NSDictionary *obj in dic[@"obj"]) {
+            NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc]init];
+            [parameterDic setObject:logSource.userName forKey:@"username"];
+            [parameterDic setObject:logSource.password forKey:@"password"];
+            [parameterDic setObject:logSource.obj[@"UserID"] forKey:@"UserId"];
+            [parameterDic setObject:logSource.userName forKey:@"UserCode"];
+            
+            [parameterDic setObject:obj[@"flow_code"] forKey:@"flowcode"];
+            [parameterDic setObject:obj[@"link_def_id"] forKey:@"linkdefid"];
+            [parameterDic setObject:obj[@"business_id"] forKey:@"BusinessId"];
+            [parameterDic setObject:obj[@"flow_ins_id"] forKey:@"FlowInsId"];
+            [parameterDic setObject:obj[@"link_ins_id"] forKey:@"LinkInsId"];
+            [parameterDic setObject:obj[@"task_id"] forKey:@"SessionId"];
+            [parameterDic setObject:obj[@"started_user_name"] forKey:@"UserCName"];
+            [parameterDic setObject:obj[@"envi_type"] forKey:@"enviType"];
+            [parameterDic setObject:obj[@"task_scene_id"] forKey:@"TaskSceneId"];
+            [parameterDic setObject:obj[@"entity_name"] forKey:@"EntityName"];
+            
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@",obj[@"monitor_unit_name"]];
             data.centerTxet = [NSString stringWithFormat:@"%@|%@|%@|%@",obj[@"envi_type"],obj[@"monitor_name"],obj[@"entity_name"],obj[@"task_code"]];
             data.bottomTxet = [NSString stringWithFormat:@"%@|实验室[%@]|%@",obj[@"link_name"],obj[@"session_state_str"],obj[@"started_user_name"]];
             data.dateText = [NSString stringWithFormat:@"%@",obj[@"started_time"]];
             [cellAy addObject:data];
+            [parameterAy addObject:parameterDic];
         }
         sourceAy = [[NSArray alloc]initWithArray:cellAy];
         _tableView.sourceAy = sourceAy;
@@ -280,9 +299,11 @@
         sampleNextCon.parameter = parameterAy[indexPath.row];
         [self.navigationController pushViewController:sampleNextCon animated:YES];
     }else if ([self.title isEqual:@"监测报告"]){
-            LT_MonitoringReportNextViewController * next = [[LT_MonitoringReportNextViewController alloc]init];
-            next.BtnAy = @[@"报告",@"监测",@"现场",@"附件",@"操作"];
-            [self.navigationController pushViewController:next animated:YES];
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        LT_MonitoringReportNextViewController * next = [[LT_MonitoringReportNextViewController alloc]init];
+        next.BtnAy = @[@"报告",@"监测",@"现场",@"附件",@"操作"];
+        next.parameter = parameterAy[indexPath.row];
+        [self.navigationController pushViewController:next animated:YES];
     }
     
     

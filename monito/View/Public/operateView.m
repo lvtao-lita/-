@@ -4,7 +4,6 @@
 //  操作流程View 
 //  Created by lvtao on 16/12/19.
 //  Copyright © 2016年 lvtao. All rights reserved.
-//
 
 #import "operateView.h"
 #import "AppDelegate.h"
@@ -27,11 +26,15 @@
     [self setButton:self.sendBtn WithTittle:@"发送" AndImage:@"send"];
     
     self.transmitBtn = [[UIButton alloc]initWithFrame:CGRectMakeRelative(0, 122, 375, 60)];
-    [self setButton:self.transmitBtn WithTittle:@"转办" AndImage:@"backlog"];
     
     [self addSubview:self.flowBtn];
     [self addSubview:self.sendBtn];
     [self addSubview:self.transmitBtn];
+}
+-(void)creatRollback{
+    self.rollback = [[UIButton alloc]initWithFrame:CGRectMakeRelative(0, 183, 375, 60)];
+    [self setButton:self.rollback WithTittle:@"回退" AndImage:@"rollback"];
+    [self addSubview:self.rollback];
 }
 
 -(void)setButton:(UIButton *)btn WithTittle:(NSString *)tittle AndImage:(NSString *)image{

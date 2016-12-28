@@ -16,4 +16,5 @@
 -(void)creatTabViewList:(NSArray * )arr;
 -(void)creatTabViewListSource:(NSArray *)sourceAy;
 -(void)creatMTabViewListSource:(NSArray *)sourceAy;
+-(void)reloadWtihSource:(NSArray *)sourceAy;
 @end

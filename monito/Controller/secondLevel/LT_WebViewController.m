@@ -7,7 +7,9 @@
 //
 
 #import "LT_WebViewController.h"
+#import "LT_oneWebViewController.h"
 #import "AppDelegate.h"
+#import "NetworkRequests.h"
 #import "PrefixHeader.pch"
 
 @interface LT_WebViewController ()<UIScrollViewDelegate>{
@@ -162,11 +164,73 @@
                 WebView.tag = i+1;
                 WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
                 [_scrollView addSubview:WebView];
+            }else if ([arr[i] isEqualToString:@"详细信息"]){
+                UIWebView * WebView = [[UIWebView alloc]init];
+                WebView.tag = i+1;
+                WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
+                [_scrollView addSubview:WebView];
+            }else if ([arr[i] isEqualToString:@"流程操作"]){
+                _OPView = [[operateView alloc]init];
+                _OPView.frame = CGRectMakeRelative(375*i, 4, 375, 553);
+                [_OPView creatRollback];
+                [self.OPView setButton:self.OPView.transmitBtn WithTittle:@"转办" AndImage:@"backlog"];
+                [_scrollView addSubview:_OPView];
+                [_OPView.flowBtn addTarget:self action:@selector(operate:) forControlEvents:UIControlEventTouchUpInside];
+                [_OPView.sendBtn addTarget:self action:@selector(operate:) forControlEvents:UIControlEventTouchUpInside];
+                [_OPView.transmitBtn addTarget:self action:@selector(operate:) forControlEvents:UIControlEventTouchUpInside];
+                [_OPView.rollback addTarget:self action:@selector(operate:) forControlEvents:UIControlEventTouchUpInside];
+                _OPView.flowBtn.tag     = 1;
+                _OPView.sendBtn.tag     = 2;
+                _OPView.transmitBtn.tag = 3;
+                _OPView.rollback.tag    = 4;
             }
         }
     }
 }
 -(void)operate:(UIButton *)btn{
+    NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc]init];
+    LT_oneWebViewController * oneWebCon = [[LT_oneWebViewController alloc]init];
+    if (btn.tag == 1) {
+        NSLog(@"流程");
+        [parameterDic setValue:self.parameter[@"SessionId"] forKey:@"SessionId"];
+        oneWebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/WorkFlow/FlowLogAnalyseDone.aspx";
+        
+    }else if (btn.tag == 2){
+        NSLog(@"发送");
+        [parameterDic setValue:self.parameter[@"FlowInsId"] forKey:@"FlowInsId"];
+        [parameterDic setValue:self.parameter[@"SessionId"] forKey:@"SessionId"];
+        [parameterDic setValue:self.parameter[@"TempId"] forKey:@"TempId"];
+        [parameterDic setValue:self.parameter[@"LinkInsId"] forKey:@"LinkInsId"];
+        [parameterDic setValue:self.parameter[@"UserCName"] forKey:@"UserCName"];
+        [parameterDic setValue:self.parameter[@"UserCode"] forKey:@"UserCode"];
+        [parameterDic setValue:self.parameter[@"UserId"] forKey:@"UserId"];
+        oneWebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/WorkFlow/NewVersion/TaskSubmit.aspx";
+        
+    }else if (btn.tag == 3){
+        NSLog(@"转办");
+        [parameterDic setValue:self.parameter[@"FlowInsId"] forKey:@"FlowInsId"];
+        [parameterDic setValue:self.parameter[@"SessionId"] forKey:@"SessionId"];
+        [parameterDic setValue:self.parameter[@"TempId"] forKey:@"TempId"];
+        [parameterDic setValue:self.parameter[@"LinkInsId"] forKey:@"LinkInsId"];
+        [parameterDic setValue:self.parameter[@"UserCName"] forKey:@"UserCName"];
+        [parameterDic setValue:self.parameter[@"UserCode"] forKey:@"UserCode"];
+        [parameterDic setValue:self.parameter[@"UserId"] forKey:@"UserId"];
+        oneWebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/WorkFlow/TaskTransfer.aspx";
+        
+    }else if (btn.tag == 4){
+        NSLog(@"回退");
+        [parameterDic setValue:self.parameter[@"FlowInsId"] forKey:@"FlowInsId"];
+        [parameterDic setValue:self.parameter[@"SessionId"] forKey:@"SessionId"];
+        [parameterDic setValue:self.parameter[@"TempId"] forKey:@"TempId"];
+        [parameterDic setValue:self.parameter[@"LinkInsId"] forKey:@"LinkInsId"];
+        [parameterDic setValue:self.parameter[@"UserCName"] forKey:@"UserCName"];
+        [parameterDic setValue:self.parameter[@"UserCode"] forKey:@"UserCode"];
+        [parameterDic setValue:self.parameter[@"UserId"] forKey:@"UserId"];
+        oneWebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/WorkFlow/NewVersion/TaskSpanBack.aspx";
+        
+    }
+    oneWebCon.parameter = parameterDic;
+    [self.navigationController pushViewController:oneWebCon animated:YES];
 
 }
 -(void)addClik{
@@ -175,7 +239,7 @@
     for (int i = 0; i < Btnarr.count; i++) {
         [Btnarr[i] addTarget:self action:@selector(clik:) forControlEvents:UIControlEventTouchUpInside];
         UIButton * btn = Btnarr[i];
-        if ([btn.titleLabel.text isEqualToString:@"基本"]) {
+        if ([btn.titleLabel.text isEqualToString:@"基本"]||[btn.titleLabel.text isEqualToString:@"详细信息"]) {
             [Btnarr[i] sendActionsForControlEvents:UIControlEventTouchUpInside];
         }
     }
@@ -221,6 +285,47 @@
     [self clickButton:btn];
 }
 -(void)clickButton:(UIButton *)btn{
+    if ([btn.titleLabel.text isEqualToString:@"详细信息"]) {
+        NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc]init];
+        [parameterDic setValue:self.parameter[@"FlowInsID"] forKey:@"FlowInsID"];
+        [parameterDic setValue:self.parameter[@"LinkInsId"] forKey:@"LinkInsId"];
+        [parameterDic setValue:self.parameter[@"SessionId"] forKey:@"SessionId"];
+        [parameterDic setValue:self.parameter[@"UserCName"] forKey:@"UserCName"];
+        [parameterDic setValue:self.parameter[@"UserCode"] forKey:@"UserCode"];
+        [parameterDic setValue:self.parameter[@"UserId"] forKey:@"UserId"];
+        [parameterDic setValue:self.parameter[@"businessId"] forKey:@"businessId"];
+        [parameterDic setValue:self.parameter[@"entity_name"] forKey:@"entity_name"];
+        [parameterDic setValue:self.parameter[@"link_code"] forKey:@"link_code"];
+        [parameterDic setValue:self.parameter[@"taskId"] forKey:@"taskId"];
+        if (self.flag == 0) {
+            [NetworkRequests requestWebWithparameters:parameterDic andWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Analyse/ListViewItem.aspx" Success:^(NSString *str) {
+                NSArray * subView =[_scrollView subviews];
+                for (id obj in subView) {
+                    if ([obj isKindOfClass:[UIWebView class]]) {
+                        UIWebView * web = obj;
+                        [web loadHTMLString:str baseURL:nil];
+                    }
+                }
+            } failure:^(NSDictionary *dic) {
+                NSLog(@"请求失败");
+            }];
+        }
+        if (self.flag ==1) {
+            [NetworkRequests requestWebWithparameters:parameterDic andWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Analyse/ListViewItem.aspx" Success:^(NSString *str) {
+                NSArray * subView =[_scrollView subviews];
+                for (id obj in subView) {
+                    if ([obj isKindOfClass:[UIWebView class]]) {
+                        UIWebView * web = obj;
+                        [web loadHTMLString:str baseURL:nil];
+                    }
+                }
+            } failure:^(NSDictionary *dic) {
+                NSLog(@"请求失败");
+            }];
+        }
+        
+        
+    }
     
 }
 

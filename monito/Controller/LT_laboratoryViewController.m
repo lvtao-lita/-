@@ -7,11 +7,16 @@
 //
 
 #import "LT_laboratoryViewController.h"
+#import "mytableView.h"
+#import "searchView.h"
 #import "PrefixHeader.pch"
-@interface LT_laboratoryViewController ()<UIScrollViewDelegate>{
+@interface LT_laboratoryViewController ()<UIScrollViewDelegate,UITableViewDelegate>{
+    NSMutableDictionary * dic1;
     nativeScrollView * scrollVi;
     NSArray * Btnarr;
     NSMutableArray * sourceAy;
+    NSMutableArray * pamaraterAy;
+    int num;
 }
 
 @end
@@ -22,10 +27,18 @@
     [super viewDidLoad];
     [self creatDataSource];
     [self creatUI];
+    [self addSearchClick];
 }
 -(void)creatDataSource{
+    num = 0;
+    pamaraterAy = [[NSMutableArray alloc]init];
     sourceAy = [[NSMutableArray alloc]init];
-    [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
+    loginSource * loginS = [loginSource sharedInstance];
+    dic1 = [[NSMutableDictionary alloc]init];
+    [dic1 setObject:@"SYS_XMJD" forKey:@"linkcode"];
+    [dic1 setObject:@"" forKey:@"keyword"];
+    [dic1 setObject:loginS.password forKey:@"password"];
+    [dic1 setObject:loginS.userName forKey:@"username"];
     [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
 }
 -(void)creatUI{
@@ -56,6 +69,7 @@
     scrollVi.delegate = self;
     [scrollVi creatSearchView:@[@"校核",@"审核"]];
     
+    
     scrollVi.frame = CGRectMakeRelative(0, 50, 375, 617);
     scrollVi.backgroundColor = [UIColor colorWithRed:219.0/255 green:219.0/255 blue:219.0/255 alpha:1];
     
@@ -63,6 +77,60 @@
     [self.view addSubview:scrollVi];
     [self.view addSubview:pgView];
     [self addClik];
+    [sourceAy addObject:@[]];
+    [sourceAy addObject:@[]];
+    //创建表格
+    [scrollVi creatMTabViewListSource:sourceAy];
+    NSArray * scrollViSubAy = [scrollVi subviews];
+    for (id obj in scrollViSubAy) {
+        if ([obj isKindOfClass:[UITableView class]]) {
+            mytableView * temp =obj;
+            temp.delegate = self;
+        }
+    }
+}
+
+//搜索点击事件添加
+-(void)addSearchClick{
+    NSArray * subViewAy = [scrollVi subviews];
+    for (id obj in subViewAy) {
+        if ([obj isKindOfClass:[searchView class]]) {
+            searchView * temp = obj;
+            [temp.btn addTarget:self action:@selector(searchClick) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }
+}
+-(void)searchClick{
+    NSArray * subViewAy = [scrollVi subviews];
+    for (id obj in subViewAy) {
+        if ([obj isKindOfClass:[searchView class]]) {
+            searchView * temp = obj;
+            if (num == 0) {
+                if (temp.searchTextField.text ==nil) {
+                    [dic1 setObject:@"" forKey:@"keyword"];
+                }else{
+                    [dic1 setObject:temp.searchTextField.text forKey:@"keyword"];
+                    break;
+                }
+            }else{
+                if (temp.searchTextField.text ==nil) {
+                    [dic1 setObject:@"" forKey:@"keyword"];
+                }else{
+                    [dic1 setObject:temp.searchTextField.text forKey:@"keyword"];
+                }
+            }
+            
+            
+        }
+    }
+    if (num ==0) {
+        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
+        NSLog(@"校核搜索");
+    }else if (num ==1){
+        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
+        NSLog(@"审核搜索");
+    }
+    
 }
 //添加点击事件
 -(void)addClik{
@@ -96,19 +164,46 @@
         btn.selected = YES;
      
     }
+    [self requst:btn];
 }
-
+-(void)requst:(UIButton *)btn{
+    if ([btn.titleLabel.text isEqualToString:@"校核"]) {
+        num = 0;
+        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
+    }
+    if ([btn.titleLabel.text isEqualToString:@"审核"]) {
+        num = 1;
+        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
+    }
+}
 -(void)requestWithURL:(NSString *)url{
-    loginSource * loginS = [loginSource sharedInstance];
-    NSMutableDictionary * dic1 = [[NSMutableDictionary alloc]init];
-    [dic1 setObject:@"SYS_XMJD" forKey:@"linkcode"];
-    [dic1 setObject:@"" forKey:@"keyword"];
-    [dic1 setObject:loginS.password forKey:@"password"];
-    [dic1 setObject:loginS.userName forKey:@"username"];
+    
     NSMutableArray * cellAy = [[NSMutableArray alloc]init];
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
-        NSLog(@"%@",dic);
+        [pamaraterAy removeAllObjects];
+        loginSource * loginS = [loginSource sharedInstance];
         for (NSDictionary *obj in dic[@"obj"]) {
+            NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc]init];
+            
+            [parameterDic setValue:obj[	@"flow_code"] forKey:@"flowcode"];
+            [parameterDic setValue:obj[@"link_def_id" ] forKey:@"linkdefid"];
+            [parameterDic setValue:@"submit,back,zb" forKey:@"operationcode"];
+            [parameterDic setValue:loginS.password forKey:@"password"];
+            [parameterDic setValue:loginS.userName forKey:@"username"];
+            [parameterDic setValue:obj[@"session_id"] forKey:@"sessionid"];
+            [parameterDic setValue:obj[@"task_scene_id"] forKey:@"SessionId"];
+            [parameterDic setValue:@"" forKey:@"TempId"];
+            [parameterDic setValue:@"" forKey:@"UserCName"];
+            [parameterDic setValue:@"" forKey:@"UserCode"];
+            [parameterDic setValue:loginS.obj[@"UserID"] forKey:@"UserId"];
+            [parameterDic setValue:obj[@"flow_ins_id"] forKey:@"FlowInsID"];
+            [parameterDic setValue:obj[@"link_ins_id"] forKey:@"LinkInsId"];
+            [parameterDic setValue:obj[@"business_id"] forKey:@"businessId"];
+            [parameterDic setValue:obj[@"entity_name"] forKey:@"entity_name"];
+            [parameterDic setValue:@"SYS_XMJD" forKey:@"link_code"];
+            [parameterDic setValue:obj[@"task_id"] forKey:@"taskId"];
+            
+            [pamaraterAy addObject:parameterDic];
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@",obj[@"monitor_unit_name"]];
             data.bottomTxet = [NSString stringWithFormat:@"%@|%@",obj[@"task_code"],obj[@"lever"]];
@@ -116,8 +211,9 @@
             data.dateText = [NSString stringWithFormat:@"%@",obj[@"scene_start_time"]];
             [cellAy addObject:data];
         }
-        [sourceAy addObject:cellAy];
-        [scrollVi creatMTabViewListSource:sourceAy];
+        [sourceAy setObject:cellAy atIndexedSubscript:num];
+        
+        [scrollVi reloadWtihSource:sourceAy];
     } failure:^(NSDictionary *dic) {
         NSLog(@"shishisshs");
     }];
@@ -157,6 +253,27 @@ CGRectMakeRelative(CGFloat x,CGFloat y,CGFloat width,CGFloat height)
     NSLog(@"已经减速结束时调用");
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    AppDelegate * app = (id)[UIApplication sharedApplication].delegate;
+    return 90*app.autoSizeScaleY;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    NSLog(@"跳转");
+    LT_WebViewController *next = [[LT_WebViewController alloc]init];
+    next.parameter = pamaraterAy[indexPath.row];
+    NSArray * subAy = self.BtnView.subviews;
+    for (UIButton * obj in subAy) {
+        if (obj.selected == YES) {
+            next.title = obj.titleLabel.text;
+        }
+    }
+    next.BtnAy = @[@"详细信息",@"流程操作"];
+    next.flag = num;
+    [self.navigationController pushViewController:next animated:YES];
+    
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

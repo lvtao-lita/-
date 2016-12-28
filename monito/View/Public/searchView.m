@@ -22,7 +22,7 @@
     UIView * view = [[UIView alloc]init];
     view.frame = CGRectMakeRelative(0, 0, 375, 60);
     _searchTextField = [[UITextField alloc]initWithFrame:CGRectMakeRelative(10, 10, 300, 40)];
-    _searchTextField.placeholder = string;
+    _searchTextField.placeholder = @"请输入搜索内容";
     _searchTextField.backgroundColor = [UIColor whiteColor];
     
     _btn = [[UIButton alloc]initWithFrame:CGRectMakeRelative(310, 10, 65, 40)];

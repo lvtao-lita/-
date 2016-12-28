@@ -40,6 +40,7 @@
 		0521A35B1DEBD3BE00F33DBC /* UIProgressView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0521A3481DEBD3BE00F33DBC /* UIProgressView+AFNetworking.m */; };
 		0521A35C1DEBD3BE00F33DBC /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0521A34A1DEBD3BE00F33DBC /* UIRefreshControl+AFNetworking.m */; };
 		0521A35D1DEBD3BE00F33DBC /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0521A34C1DEBD3BE00F33DBC /* UIWebView+AFNetworking.m */; };
+		052A3F5C1E1362D100CF9195 /* rollback.png in Resources */ = {isa = PBXBuildFile; fileRef = 052A3F5B1E1362D100CF9195 /* rollback.png */; };
 		0559E8211DED7C33001DDC33 /* NSString+subAppend.m in Sources */ = {isa = PBXBuildFile; fileRef = 0559E8201DED7C33001DDC33 /* NSString+subAppend.m */; };
 		058828DA1DE424ED00EFF5C8 /* LT_ sampleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 058828D91DE424ED00EFF5C8 /* LT_ sampleViewController.m */; };
 		058828DD1DE4252F00EFF5C8 /* LT_ substanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 058828DC1DE4252F00EFF5C8 /* LT_ substanceViewController.m */; };
@@ -222,6 +223,7 @@
 		0521A34A1DEBD3BE00F33DBC /* UIRefreshControl+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIRefreshControl+AFNetworking.m"; sourceTree = "<group>"; };
 		0521A34B1DEBD3BE00F33DBC /* UIWebView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWebView+AFNetworking.h"; sourceTree = "<group>"; };
 		0521A34C1DEBD3BE00F33DBC /* UIWebView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWebView+AFNetworking.m"; sourceTree = "<group>"; };
+		052A3F5B1E1362D100CF9195 /* rollback.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rollback.png; sourceTree = "<group>"; };
 		0559E81F1DED7C33001DDC33 /* NSString+subAppend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+subAppend.h"; sourceTree = "<group>"; };
 		0559E8201DED7C33001DDC33 /* NSString+subAppend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+subAppend.m"; sourceTree = "<group>"; };
 		058828D81DE424ED00EFF5C8 /* LT_ sampleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LT_ sampleViewController.h"; sourceTree = "<group>"; };
@@ -654,6 +656,7 @@
 		0592C2141DE2BE90007EE24F /* icon */ = {
 			isa = PBXGroup;
 			children = (
+				052A3F5B1E1362D100CF9195 /* rollback.png */,
 				05D827851E09243D000F6D05 /* icon_right.png */,
 				05D827291E08DF76000F6D05 /* backlog.png */,
 				05D8272A1E08DF76000F6D05 /* city.png */,
@@ -1040,6 +1043,7 @@
 				0592C2311DE2E825007EE24F /* quality.png in Resources */,
 				05EED82E1DE7D1D400479104 /* LT_feedbackFunctionViewController.xib in Resources */,
 				05D827701E090FA4000F6D05 /* bar.png in Resources */,
+				052A3F5C1E1362D100CF9195 /* rollback.png in Resources */,
 				0592C2191DE2BE90007EE24F /* select.png in Resources */,
 				0595C21F1DDEE81B0016DB74 /* Assets.xcassets in Resources */,
 				05D8277E1E090FA4000F6D05 /* menu_5.png in Resources */,

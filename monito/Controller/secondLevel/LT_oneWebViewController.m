@@ -31,9 +31,10 @@
 -(void)requstWithURL:(NSString *)url{
     NSLog(@"%@",self.parameter);
     [NetworkRequests requestWebWithparameters:self.parameter andWithURL:url Success:^(NSString *str) {
+        NSLog(@"请求成功%@",str);
         [webview loadHTMLString:str baseURL:nil];
     } failure:^(NSDictionary *dic) {
-        
+        NSLog(@"请求失败");
     }];
     
     

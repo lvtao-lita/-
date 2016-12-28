@@ -29,6 +29,7 @@
     [QRcodeBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [QRcodeBtn addTarget:self action:@selector(QRcode:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:QRcodeBtn];
+    
 }
 -(void)QRcode:(UIButton *)btn{
     // 1、 获取摄像设备

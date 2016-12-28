@@ -64,6 +64,21 @@
     [self.MtabView reloadData];
 }
 
+-(void)reloadWtihSource:(NSArray *)sourceAy{
+    NSArray * view = [self subviews];
+    int i = 0;
+    for (id tabView in view) {
+        if([tabView isKindOfClass:[mytableView class]]){
+            if (i<sourceAy.count) {
+                mytableView * temp = tabView;
+                temp.sourceAy = sourceAy[i];
+                i++;
+                [tabView reloadData];
+            }
+        }
+    }
+}
+
 
 CG_INLINE CGRect
 CGRectMakeRelative(CGFloat x,CGFloat y,CGFloat width,CGFloat height)

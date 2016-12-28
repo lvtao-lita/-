@@ -53,17 +53,7 @@
     NSLog(@"已经选中cell时调用");
     //在跳转之前，将该cell去选中
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ([[self viewController].title  isEqual:@"实验室"]){
-        LT_WebViewController *next = [[LT_WebViewController alloc]init];
-        NSArray * subAy = ((LT_laboratoryViewController *)[self viewController]).BtnView.subviews;
-        for (UIButton * obj in subAy) {
-            if (obj.selected == YES) {
-                next.title = obj.titleLabel.text;
-            }
-        }
-        next.BtnAy = @[@"详细信息",@"流程操作"];
-        [[self viewController].navigationController pushViewController:next animated:YES];
-    }else if ([[self viewController].title  isEqual:@"流程查询"]){
+    if ([[self viewController].title  isEqual:@"流程查询"]){
         LT_BPQViewController * next = [[LT_BPQViewController alloc]init];
         [[self viewController].navigationController pushViewController:next animated:YES];
     }else if ([[self viewController].title  isEqual:@"企业档案"]){

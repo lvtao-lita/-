@@ -24,7 +24,7 @@
     self.OPView.flowBtn.tag =1;
     self.OPView.sendBtn.tag =2;
     self.OPView.transmitBtn.tag =3;
-    NSLog(@"%lu",[self.scrollView subviews].count);
+    [self.OPView setButton:self.OPView.transmitBtn WithTittle:@"转办" AndImage:@"backlog"];
 }
 -(void)viewDidAppear:(BOOL)animated{
     NSLog(@"%lu",[self.scrollView subviews].count);
