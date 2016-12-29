@@ -53,14 +53,7 @@
     NSLog(@"已经选中cell时调用");
     //在跳转之前，将该cell去选中
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ([[self viewController].title  isEqual:@"流程查询"]){
-        LT_BPQViewController * next = [[LT_BPQViewController alloc]init];
-        [[self viewController].navigationController pushViewController:next animated:YES];
-    }else if ([[self viewController].title  isEqual:@"企业档案"]){
-        LT_sampleNextViewController * next = [[LT_sampleNextViewController alloc]init];
-        next.BtnAy = @[@"信息",@"报告",@"监测",@"附件",@"排口",@"工况"];
-        [[self viewController].navigationController pushViewController:next animated:YES];
-    }else if ([[self viewController].title  isEqual:@"物质领用"]){
+    if ([[self viewController].title  isEqual:@"物质领用"]){
         LT_WebViewController *next = [[LT_WebViewController alloc]init];
         [next creatrightBarButtonItem];
         [[self viewController].navigationController pushViewController:next animated:YES];

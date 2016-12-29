@@ -10,11 +10,13 @@
 #import "dateSource.h"
 #import "timeCalculateNS.h"
 #import "LT_sampleNextViewController.h"
+#import "LT_oneWebViewController.h"
 #import "PrefixHeader.pch"
 @interface fatherViewController ()<UITableViewDelegate>{
     NSArray * sourceAy;
     NSMutableDictionary * dic1;
     NSMutableArray * parameterAy;
+    NSMutableArray * WebOtherAy;
 }
 
 @end
@@ -34,6 +36,8 @@
     [self creatDataSource];
 }
 -(void)creatDataSource{
+    parameterAy = [[NSMutableArray alloc]init];
+    WebOtherAy  = [[NSMutableArray alloc]init];
     loginSource * logSource =[loginSource sharedInstance];
     dic1 = [[NSMutableDictionary alloc]init];
     [dic1 setObject:self.inqView.endTime.text forKey:@"endtime"];
@@ -131,7 +135,7 @@
 -(void)requestWithURL:(NSString *)url{
     NSMutableArray * cellAy = [[NSMutableArray alloc]init];
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
-        parameterAy = [[NSMutableArray alloc]init];
+        [parameterAy removeAllObjects];
         loginSource * logSource = [loginSource sharedInstance];
         for (NSDictionary *obj in dic[@"obj"]) {
             NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc]init];
@@ -172,7 +176,7 @@
 //监测报告
 -(void)MonitoringReportRequstWithURL:(NSString *)url{
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
-        parameterAy = [[NSMutableArray alloc]init];
+        [parameterAy removeAllObjects];
         loginSource * logSource = [loginSource sharedInstance];
         NSMutableArray * cellAy = [[NSMutableArray alloc]init];
         for (NSDictionary *obj in dic[@"obj"]) {
@@ -211,9 +215,27 @@
 //流程查询
 -(void)flowInquireRequstWithURL:(NSString *)url{
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
-        NSLog(@"%@",dic);
+        [parameterAy removeAllObjects];
+        [WebOtherAy removeAllObjects];
         NSMutableArray * cellAy = [[NSMutableArray alloc]init];
+        loginSource * logSource = [loginSource sharedInstance];
         for (NSDictionary *obj in dic[@"obj"]) {
+            NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc]init];
+            NSMutableDictionary * WebDic  = [[NSMutableDictionary alloc]init];
+            
+            [WebDic setValue:obj[@"business_id"] forKey:@"BusinessId"];
+            [WebDic setValue:obj[@"flow_ins_id"] forKey:@"FlowInsId"];
+            [WebDic setValue:obj[@"link_ins_id"] forKey:@"LinkInsId"];
+            [WebDic setValue:obj[@"task_id"] forKey:@"SessionId"];
+            [parameterAy addObject:WebDic];
+            
+            [WebDic setValue:logSource.userName forKey:@"username"];
+            [WebDic setValue:logSource.password forKey:@"password"];
+            [WebDic setValue:logSource.idid forKey:@"sessionid"];
+            [WebDic setValue:obj[@"report_code"] forKey:@"reportcode"];
+            [WebDic setValue:obj[@"report_name"] forKey:@"reportname"];
+            [WebOtherAy addObject:WebDic];
+            
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@",obj[@"place_name"]];
             data.centerTxet = [NSString stringWithFormat:@"%@|%@|%@",obj[@"business_code"],obj[@"envi_type"],obj[@"monitor_type"]];
@@ -292,20 +314,29 @@
 
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if ([self.title isEqual:@"采样信息"]) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         LT_sampleNextViewController * sampleNextCon = [[LT_sampleNextViewController alloc]init];
         sampleNextCon.BtnAy = @[@"基本",@"现场",@"工况",@"绘图",@"附件",@"操作"];
         sampleNextCon.parameter = parameterAy[indexPath.row];
         [self.navigationController pushViewController:sampleNextCon animated:YES];
     }else if ([self.title isEqual:@"监测报告"]){
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
         LT_MonitoringReportNextViewController * next = [[LT_MonitoringReportNextViewController alloc]init];
         next.BtnAy = @[@"报告",@"监测",@"现场",@"附件",@"操作"];
         next.parameter = parameterAy[indexPath.row];
         [self.navigationController pushViewController:next animated:YES];
+    }else if ([self.title isEqualToString:@"流程查询"]||[self.title isEqualToString:@"档案查询"]){
+        LT_oneWebViewController * next = [[LT_oneWebViewController alloc]init];
+        next.parameter = parameterAy[indexPath.row];
+        next.WebOtherDic = WebOtherAy[indexPath.row];
+        next.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/WorkFlow/FlowLogMon.aspx";
+        [self.navigationController pushViewController:next animated:NO];
+    }else if ([self.title isEqualToString:@"企业档案"]){
+        LT_WebViewController * next = [[LT_WebViewController alloc]init];
+        next.BtnAy = @[@"信息",@"报告",@"监测",@"附件",@"排口",@"工况"];
+//        next.parameter = parameterAy[indexPath.row];
+        [self.navigationController pushViewController:next animated:YES];
     }
-    
     
     
 }

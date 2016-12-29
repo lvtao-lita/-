@@ -49,8 +49,9 @@
         _AtabView.frame = CGRectMakeRelative(0+375*i, 70, 375, 533);
         _AtabView.sourceAy = sourceAy[i];
         [self addSubview:_AtabView];
+        [self.AtabView reloadData];
     }
-    [self.AtabView reloadData];
+    
 }
 //多张表格
 -(void)creatMTabViewListSource:(NSArray *)sourceAy{
@@ -60,8 +61,9 @@
         _MtabView.frame = CGRectMakeRelative(0+375*i, 70, 375, 533);
         _MtabView.sourceAy = sourceAy[i];
         [self addSubview:_MtabView];
+        [self.MtabView reloadData];
     }
-    [self.MtabView reloadData];
+    
 }
 
 -(void)reloadWtihSource:(NSArray *)sourceAy{

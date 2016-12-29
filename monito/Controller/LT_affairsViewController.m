@@ -13,6 +13,7 @@
     nativeScrollView * scrollVi;
     NSArray * Btnarr;
     NSMutableArray * sourceAy;
+    int num;
 }
 
 @end
@@ -21,17 +22,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    num = 0;
     [self creatDataSource];
     [self creatUI];
     
 }
 -(void)creatDataSource{
     sourceAy = [[NSMutableArray alloc]init];
+    [sourceAy addObject:@[]];
+    [sourceAy addObject:@[]];
+    [sourceAy addObject:@[]];
     [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/OADocTaskSvc.asmx/list"];
-    [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/OADocTaskSvc.asmx/list"];
-    [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/OADocTaskSvc.asmx/list"];
-    
-
 }
 -(void)creatUI{
     NSArray *BtnAy =@[@"发文",@"收文",@"查询"];
@@ -67,7 +68,9 @@
     [self.view addSubview:scrollVi];
     [self.view addSubview:pgView];
     [self addClik];
+    [scrollVi creatTabViewListSource:sourceAy];
 }
+#pragma mark - 点击事件
 //添加点击事件
 -(void)addClik{
     Btnarr = [[NSArray alloc]initWithArray:view.subviews];
@@ -100,6 +103,22 @@
         btn.selected = YES;
         
     }
+    [self requst:btn];
+}
+
+-(void)requst:(UIButton *)btn{
+    if ([btn.titleLabel.text isEqualToString:@"发文"]) {
+        num = 0;
+        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/OADocTaskSvc.asmx/list"];
+    }
+    if ([btn.titleLabel.text isEqualToString:@"收文"]) {
+        num = 1;
+        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/OADocTaskSvc.asmx/list"];
+    }
+    if ([btn.titleLabel.text isEqualToString:@"查询"]) {
+        num = 2;
+        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/OADocTaskSvc.asmx/list"];
+    }
 }
 
 -(void)requestWithURL:(NSString *)url{
@@ -120,8 +139,9 @@
             data.dateText = [NSString stringWithFormat:@"%@",obj[@"started_time"]];
             [cellAy addObject:data];
         }
-        [sourceAy addObject:cellAy];
-        [scrollVi creatTabViewListSource:sourceAy];
+        [sourceAy setObject:cellAy atIndexedSubscript:num];
+        [scrollVi reloadWtihSource:sourceAy];
+        
     } failure:^(NSDictionary *dic) {
         NSLog(@"shishisshs");
     }];

@@ -7,12 +7,14 @@
 //
 
 #import "LT_inventoryViewController.h"
+#import "LT_oneWebViewController.h"
 #import "PrefixHeader.pch"
-@interface LT_inventoryViewController (){
+@interface LT_inventoryViewController ()<UITableViewDelegate>{
     NSMutableArray * sourceAy;
     UITextField * keyword;
-    mytableView * tableView;
+    mytableView * TableView;
     NSMutableDictionary * dic1;
+    NSMutableArray * parameterAy;
 }
 
 @end
@@ -22,13 +24,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    UIBarButtonItem * rightBtn = [[UIBarButtonItem alloc]initWithTitle:@"查询" style:UIBarButtonItemStyleDone target:self action:@selector(inquire)];
+    UIBarButtonItem * rightBtn = [[UIBarButtonItem alloc]initWithTitle:@"查询" style:UIBarButtonItemStyleDone target:self action:@selector(search)];
     self.navigationItem.rightBarButtonItem = rightBtn;
     self.view.backgroundColor = [UIColor colorWithRed:219.0/255 green:219.0/255 blue:219.0/255 alpha:1];
     [self creatDataSource];
     [self creatUI];
 }
 -(void)creatDataSource{
+    parameterAy = [[NSMutableArray alloc]init];
     loginSource * logSource =[loginSource sharedInstance];
     dic1 = [[NSMutableDictionary alloc]init];
     [dic1 setObject:@"" forKey:@"keyword"];
@@ -41,23 +44,24 @@
 
 -(void)creatUI{
     UILabel * inquire = [[UILabel alloc]init];
-    inquire.frame = CGRectMakeRelative(10, 0, 100, 60);
+    inquire.frame = CGRectMakeRelative(10, 0, 100, 50);
     inquire.text = @"查询条件";
     
     keyword = [[UITextField alloc]init];
-    keyword.frame = CGRectMakeRelative(0, 60, 375, 60);
+    keyword.frame = CGRectMakeRelative(0, 50, 375, 50);
     [self setTextfiled:keyword leftViewname:@"关 键 字："];
     
     UILabel * dateList = [[UILabel alloc]init];
-    dateList.frame = CGRectMakeRelative(10, 120, 375, 60);
+    dateList.frame = CGRectMakeRelative(10, 100, 375, 50);
     dateList.text = @"数据列表";
     
-    tableView = [[mytableView alloc]init];
-    tableView.sourceAy = sourceAy;
-    tableView.frame = CGRectMakeRelative(0, 180, 375, 427);
+    TableView = [[mytableView alloc]init];
+    TableView.delegate = self;
+    TableView.sourceAy = sourceAy;
+    TableView.frame = CGRectMakeRelative(0, 150, 375, 427);
     
     [self.view addSubview:inquire];
-    [self.view addSubview:tableView];
+    [self.view addSubview:TableView];
     [self.view addSubview:dateList];
     
 }
@@ -77,30 +81,58 @@
     NSDictionary *parameter = [NSDictionary dictionaryWithDictionary:dic1];
     [NetworkRequests requestWithparameters:parameter andWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/ReagentSvc.asmx/reagentList" Success:^(NSDictionary *dic) {
         NSMutableArray * cellAy = [[NSMutableArray alloc]init];
+        [parameterAy removeAllObjects];
+        loginSource * loginS = [loginSource sharedInstance];
         for (NSDictionary *obj in dic[@"obj"]) {
+            
+            NSMutableDictionary *parameterDic = [[NSMutableDictionary alloc]init];
+            [parameterDic setValue:@"Edit" forKey:@"CMD"];
+            [parameterDic setValue:obj[@"reagent_id"] forKey:@"ReagentId"];
+            [parameterDic setValue:loginS.userName forKey:@"UserCode"];
+            
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@(%@)",obj[@"reagent_type_name"],obj[@"reagent_name"]];
             data.centerTxet = [NSString stringWithFormat:@"%@|%@",obj[@"gb_code"],obj[@"toxicity_level_name"]];
             data.bottomTxet = [NSString stringWithFormat:@"库存量 %@",obj[@"inventory_count"]];
             data.dateText = [NSString stringWithFormat:@"未达安全存量"];
             [cellAy addObject:data];
+            [parameterAy addObject:parameterDic];
         }
-        tableView.sourceAy = cellAy;
-        [tableView reloadData];
+        TableView.sourceAy = cellAy;
+        [TableView reloadData];
         
     } failure:^(NSDictionary *dic) {
         NSLog(@"请求失败%@",dic[@"msg"]);
     }];
 }
--(void)inquire{
-    loginSource * logSource =[loginSource sharedInstance];
-    dic1 = [[NSMutableDictionary alloc]init];
-    [dic1 setObject:keyword.text forKey:@"keyword"];
-    [dic1 setObject:logSource.password forKey:@"password"];
-    [dic1 setObject:logSource.userName forKey:@"username"];
+-(void)search{
+    [dic1 setValue:keyword.text forKey:@"keyword"];
     [self requstion];
     NSLog(@"物质库存查询");
 }
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    AppDelegate * app = (id)[UIApplication sharedApplication].delegate;
+    return 90*app.autoSizeScaleY;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //在跳转之前，将该cell去选中
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    LT_oneWebViewController *next = [[LT_oneWebViewController alloc]init];
+    next.parameter = parameterAy[indexPath.row];
+    next.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/Reagent/ReagentManager.aspx";
+    
+    [self.navigationController pushViewController:next animated:YES];
+    
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+    backItem.title = @"";
+    self.navigationItem.backBarButtonItem = backItem;
+    //选中某一个cell时，做页面跳转
+}
+
+
 CG_INLINE CGRect
 CGRectMakeRelative(CGFloat x,CGFloat y,CGFloat width,CGFloat height)
 {

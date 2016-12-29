@@ -43,7 +43,6 @@
     return 60*app.autoSizeScaleY;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"去选择");
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     LT_WebViewController * next = [[LT_WebViewController alloc]init];
     next.BtnAy = @[@"公文信息",@"附件信息"];
