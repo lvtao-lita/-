@@ -25,12 +25,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *passtwordBtn;
 @property (weak, nonatomic) IBOutlet UIButton *InputBtn;
 @property (strong,nonatomic) loginRecord * login;
-
-
-
-
-
-
 @end
 
 @implementation ViewController
@@ -41,6 +35,7 @@
     self.pastword.delegate = self;
     self.outIP.delegate    = self;
     self.intIP.delegate    = self;
+    self.pastword.secureTextEntry = YES;
     // Do any additional setup after loading the view, typically from a nib.
     [self.passtwordBtn setImage:[UIImage imageNamed:@"select.png"] forState:UIControlStateSelected];
     [self.outIPBtn setImage:[UIImage imageNamed:@"select.png"] forState:UIControlStateSelected];
@@ -106,6 +101,7 @@
 }
 #pragma mark - 登录
 - (IBAction)logIn:(UIButton *)sender {
+    _login = [loginRecord sharedInstance];
     //密码记录
     _login.userName = self.userName.text;
     _login.password = self.pastword.text;
@@ -144,7 +140,6 @@
         logSource.password = password;
         _login.encryptPsw = password;
         NSDictionary * loginDic = @{@"password":[NSString stringWithFormat:@"%@",pswStr],@"username":[NSString stringWithFormat:@"%@",self.userName.text]};
-        NSLog(@"%@",loginDic);
         [NetworkRequests requestWithparameters:loginDic andWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/LoginSvc.asmx/login" Success:^(NSDictionary *dic) {
             //记录用户名
             NSUserDefaults * user = [NSUserDefaults standardUserDefaults];

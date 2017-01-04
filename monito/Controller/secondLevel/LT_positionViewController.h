@@ -11,5 +11,6 @@
 #import <BaiduMapAPI_Search/BMKSearchComponent.h>
 #import <BaiduMapAPI_Location/BMKLocationComponent.h>
 @interface LT_positionViewController : UIViewController<BMKMapViewDelegate,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate, BMKPoiSearchDelegate>
+@property(copy,nonatomic) NSString * Nmonitor_unit_name;
 
 @end

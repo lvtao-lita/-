@@ -7,6 +7,8 @@
 //
 
 #import "LT_positionViewController.h"
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <CoreTelephony/CTCarrier.h>
 
 @interface LT_positionViewController (){
     BMKLocationService* _locService;
@@ -50,20 +52,33 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _locService = [[BMKLocationService alloc]init];
+    _poisearch = [[BMKPoiSearch alloc]init];
+    _mapView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
+    _locService.delegate = self;
+    _poisearch.delegate = self;
     [self setUI];
+    [self MobileCarrier];
+    [self Position];
     //适配ios7
     if( ([[[UIDevice currentDevice] systemVersion] doubleValue]>=7.0))
     {
         self.navigationController.navigationBar.translucent = NO;
     }
-    _locService = [[BMKLocationService alloc]init];
-    _poisearch = [[BMKPoiSearch alloc]init];
+    
+}
+-(void)MobileCarrier{
+    CTTelephonyNetworkInfo *info = [[CTTelephonyNetworkInfo alloc] init];
+    
+    CTCarrier *carrier = [info subscriberCellularProvider];
+        
+    self.GPSoperators.text = [NSString stringWithFormat:@"运营商：%@", [carrier carrierName]];
+    NSLog(@"%@",self.GPSoperators.text);
+    
 }
 -(void)viewWillAppear:(BOOL)animated {
     [_mapView viewWillAppear];
-    _mapView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
-    _locService.delegate = self;
-     _poisearch.delegate = self;
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -78,6 +93,7 @@
     [self setTextfiled:self.LatLon andName:@" 经 纬 度："];
     [self setTextfiled:self.cityName andName:@" 城市名称:"];
     [self setTextfiled:self.keyword andName:@" 关 键 字:"];
+    self.name.text = self.Nmonitor_unit_name;
 }
 -(void)setTextfiled:(UITextField *)tf andName:(NSString *)string{
     UILabel * lab = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 90, 35)];
@@ -85,8 +101,8 @@
     tf.leftViewMode = UITextFieldViewModeAlways;
     tf.leftView = lab;
 }
-//保存搜索定位
-- (IBAction)saveSeacrhPosition:(UIButton *)sender {
+//定位
+-(void)Position{
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 8) {
         //由于IOS8中定位的授权机制改变 需要进行手动授权
         CLLocationManager  *locationManager = [[CLLocationManager alloc] init];
@@ -96,6 +112,10 @@
     }
     NSLog(@"进入普通定位态");
     [_locService startUserLocationService];
+
+}
+- (void)outputAdd
+{
     // 初始化反地址编码选项（数据模型）
     BMKReverseGeoCodeOption *option = [[BMKReverseGeoCodeOption alloc] init];
     // 将数据传到反地址编码模型
@@ -103,6 +123,11 @@
     NSLog(@"%f - %f", option.reverseGeoPoint.latitude, option.reverseGeoPoint.longitude);
     // 调用反地址编码方法，让其在代理方法中输出
     [self.geoCode reverseGeoCode:option];
+}
+
+//保存搜索定位
+- (IBAction)saveSeacrhPosition:(UIButton *)sender {
+    
 
 }
 //地址搜索
@@ -111,8 +136,8 @@
     
     BMKCitySearchOption *citySearchOption = [[BMKCitySearchOption alloc]init];
     citySearchOption.pageCapacity = 10;
-    citySearchOption.city=@"北京";
-    citySearchOption.keyword = @"网吧";
+    citySearchOption.city=self.cityName.text;;
+    citySearchOption.keyword = self.keyword.text;
     BOOL flag = [_poisearch poiSearchInCity:citySearchOption];
     if(flag)
     {
@@ -125,12 +150,54 @@
     }
     
 }
+/** 经纬度转换成度分秒格式 */
+- (NSString *)stringWithCoordinateString:(NSString *)coordinateString
+{
+    /** 将经度或纬度整数部分提取出来 */
+    int latNumber = [coordinateString intValue];
+    
+    /** 取出小数点后面两位(为转化成'分'做准备) */
+    NSArray *array = [coordinateString componentsSeparatedByString:@"."];
+    /** 小数点后面部分 */
+    NSString *lastCompnetString = [array lastObject];
+    
+    /** 拼接字字符串(将字符串转化为0.xxxx形式) */
+    NSString *str1 = [NSString stringWithFormat:@"0.%@", lastCompnetString];
+    
+    /** 将字符串转换成float类型以便计算 */
+    float minuteNum = [str1 floatValue];
+    
+    /** 将小数点后数字转化为'分'(minuteNum * 60) */
+    float minuteNum1 = minuteNum * 60;
+    
+    /** 将转化后的float类型转化为字符串类型 */
+    NSString *latStr = [NSString stringWithFormat:@"%f", minuteNum1];
+    
+    /** 取整数部分即为纬度或经度'分' */
+    int latMinute = [latStr intValue];
+    
+    /** 将经度或纬度字符串合并为(xx°xx')形式 */
+    NSString *string = [NSString stringWithFormat:@"%d°%d'", latNumber, latMinute];
+    
+    return string;
+}
+
 //保存GPS定位
 - (IBAction)saveGPSAdress:(UIButton *)sender {
-    
+   
 }
 // 路径规划
 - (IBAction)pathPlanning:(UIButton *)sender {
+
+    
+    
+    if (![[UIApplication sharedApplication]canOpenURL:[NSURL URLWithString:@"baidumap://map/"]]) {
+        NSString*urlString=[[NSString stringWithFormat:@"http://maps.apple.com/?daddr=%f,%f&saddr=slat,slng",self.latitude,self.longitude]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        [[UIApplication sharedApplication]openURL:[NSURL URLWithString:urlString]];
+    }else{
+        NSString*urlString=[[NSString stringWithFormat:@"baidumap://map/direction?origin={{我的位置}}&destination=latlng:%f,%f|name=目的地&mode=driving&coord_type=gcj02",self.latitude,self.longitude]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        [[UIApplication sharedApplication]openURL:[NSURL URLWithString:urlString]];
+    }
     
 }
 
@@ -164,9 +231,14 @@
     NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
     self.latitude =userLocation.location.coordinate.latitude;
     self.longitude =userLocation.location.coordinate.longitude;
+    NSString * lat = [NSString stringWithFormat:@"%f",self.latitude];
+    NSString * lon = [NSString stringWithFormat:@"%f",self.longitude];
+    self.GPSLat.text = [NSString stringWithFormat:@"纬度：%@(%@)",[self stringWithCoordinateString:lat],lat];
+    self.GPSLog.text =  [NSString stringWithFormat:@"经度：%@(%@)",[self stringWithCoordinateString:lon],lon];
     [_mapView updateLocationData:userLocation];
     [_locService stopUserLocationService];
     _mapView.showsUserLocation = NO;
+    [self outputAdd];
 }
 /**
  *定位失败后，会调用此函数
@@ -190,11 +262,17 @@
 - (void)onGetReverseGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKReverseGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
 {
     if (result) {
-        NSLog(@"位置结果是：%@ - %@", result.address, result.addressDetail.city);
-
+        NSLog(@"位置结果是：%@%@", result.address, result.addressDetail.city);
+        NSDate * nowDate = [NSDate date];
+        NSDateFormatter * dateFomatter = [[NSDateFormatter alloc] init];
+        dateFomatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+        self.GPSTime.text = [NSString stringWithFormat:@"时间：%@",[dateFomatter stringFromDate:nowDate] ];
+        
+        self.GPSadress.text = [NSString stringWithFormat:@"地址：%@",result.address];
+        
+        self.GPSdescribe.text = @"描述：网络定位成功";
         // 定位一次成功后就关闭定位
         [_locService stopUserLocationService];
-        
     }else{
         NSLog(@"%@", @"找不到相对应的位置");
     }

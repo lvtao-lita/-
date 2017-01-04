@@ -61,6 +61,7 @@
         NSLog(@"清空缓存");
     }else if (btn.tag ==2){
         NSLog(@"注销登录");
+        [self dismissViewControllerAnimated:YES completion:nil];
     }else if (btn.tag ==3){
         LT_systemNextViewController * next = [[LT_systemNextViewController alloc]initWithNibName:@"system" bundle:nil];
         [self.navigationController pushViewController:next animated:YES];

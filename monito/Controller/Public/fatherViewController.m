@@ -139,24 +139,25 @@
         loginSource * logSource = [loginSource sharedInstance];
         for (NSDictionary *obj in dic[@"obj"]) {
             NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc]init];
-            [parameterDic setObject:logSource.userName forKey:@"username"];
-            [parameterDic setObject:logSource.password forKey:@"password"];
-            [parameterDic setObject:logSource.obj[@"UserID"] forKey:@"UserId"];
-            [parameterDic setObject:logSource.userName forKey:@"UserCode"];
+            [parameterDic setValue:logSource.userName forKey:@"username"];
+            [parameterDic setValue:logSource.password forKey:@"password"];
+            [parameterDic setValue:logSource.obj[@"UserID"] forKey:@"UserId"];
+            [parameterDic setValue:logSource.userName forKey:@"UserCode"];
             
-            [parameterDic setObject:obj[@"task_id"] forKey:@"sessionid"];
-            [parameterDic setObject:obj[@"task_scene_id"] forKey:@"TaskSceneId"];
-            [parameterDic setObject:obj[@"link_def_id"] forKey:@"linkdefid"];
-            [parameterDic setObject:obj[@"flow_ins_id"] forKey:@"FlowInsId"];
+            [parameterDic setValue:obj[@"monitor_unit_name"] forKey:@"monitor_unit_name"];
+            [parameterDic setValue:obj[@"task_id"] forKey:@"sessionid"];
+            [parameterDic setValue:obj[@"task_scene_id"] forKey:@"TaskSceneId"];
+            [parameterDic setValue:obj[@"link_def_id"] forKey:@"linkdefid"];
+            [parameterDic setValue:obj[@"flow_ins_id"] forKey:@"FlowInsId"];
 #warning LinkInsId 和 link_ins_id
-            [parameterDic setObject:obj[@"link_ins_id"] forKey:@"LinkInsId"];
-            [parameterDic setObject:obj[@"link_ins_id"] forKey:@"link_ins_id"];
+            [parameterDic setValue:obj[@"link_ins_id"] forKey:@"LinkInsId"];
+            [parameterDic setValue:obj[@"link_ins_id"] forKey:@"link_ins_id"];
 #warning UserCName 和 UserCode
-            [parameterDic setObject:obj[@"started_user_name"] forKey:@"UserCName"];
-            [parameterDic setObject:obj[@"business_id"] forKey:@"business_id"];
+            [parameterDic setValue:obj[@"started_user_name"] forKey:@"UserCName"];
+            [parameterDic setValue:obj[@"business_id"] forKey:@"business_id"];
             
-            [parameterDic setObject:obj[@"flow_code"] forKey:@"flowcode"];
-            [parameterDic setObject:obj[@"entity_name"] forKey:@"EntityName"];
+            [parameterDic setValue:obj[@"flow_code"] forKey:@"flowcode"];
+            [parameterDic setValue:obj[@"entity_name"] forKey:@"EntityName"];
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@",obj[@"monitor_unit_name"]];
             data.centerTxet = [NSString stringWithFormat:@"%@|%@|%@|%@",obj[@"envi_type"],obj[@"monitor_name"],obj[@"entity_name"],obj[@"task_code"]];
@@ -181,21 +182,21 @@
         NSMutableArray * cellAy = [[NSMutableArray alloc]init];
         for (NSDictionary *obj in dic[@"obj"]) {
             NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc]init];
-            [parameterDic setObject:logSource.userName forKey:@"username"];
-            [parameterDic setObject:logSource.password forKey:@"password"];
-            [parameterDic setObject:logSource.obj[@"UserID"] forKey:@"UserId"];
-            [parameterDic setObject:logSource.userName forKey:@"UserCode"];
+            [parameterDic setValue:logSource.userName forKey:@"username"];
+            [parameterDic setValue:logSource.password forKey:@"password"];
+            [parameterDic setValue:logSource.obj[@"UserID"] forKey:@"UserId"];
+            [parameterDic setValue:logSource.userName forKey:@"UserCode"];
             
-            [parameterDic setObject:obj[@"flow_code"] forKey:@"flowcode"];
-            [parameterDic setObject:obj[@"link_def_id"] forKey:@"linkdefid"];
-            [parameterDic setObject:obj[@"business_id"] forKey:@"BusinessId"];
-            [parameterDic setObject:obj[@"flow_ins_id"] forKey:@"FlowInsId"];
-            [parameterDic setObject:obj[@"link_ins_id"] forKey:@"LinkInsId"];
-            [parameterDic setObject:obj[@"task_id"] forKey:@"SessionId"];
-            [parameterDic setObject:obj[@"started_user_name"] forKey:@"UserCName"];
-            [parameterDic setObject:obj[@"envi_type"] forKey:@"enviType"];
-            [parameterDic setObject:obj[@"task_scene_id"] forKey:@"TaskSceneId"];
-            [parameterDic setObject:obj[@"entity_name"] forKey:@"EntityName"];
+            [parameterDic setValue:obj[@"flow_code"] forKey:@"flowcode"];
+            [parameterDic setValue:obj[@"link_def_id"] forKey:@"linkdefid"];
+            [parameterDic setValue:obj[@"business_id"] forKey:@"BusinessId"];
+            [parameterDic setValue:obj[@"flow_ins_id"] forKey:@"FlowInsId"];
+            [parameterDic setValue:obj[@"link_ins_id"] forKey:@"LinkInsId"];
+            [parameterDic setValue:obj[@"task_id"] forKey:@"SessionId"];
+            [parameterDic setValue:obj[@"started_user_name"] forKey:@"UserCName"];
+            [parameterDic setValue:obj[@"envi_type"] forKey:@"enviType"];
+            [parameterDic setValue:obj[@"task_scene_id"] forKey:@"TaskSceneId"];
+            [parameterDic setValue:obj[@"entity_name"] forKey:@"EntityName"];
             
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@",obj[@"monitor_unit_name"]];
@@ -229,12 +230,12 @@
             [WebDic setValue:obj[@"task_id"] forKey:@"SessionId"];
             [parameterAy addObject:WebDic];
             
-            [WebDic setValue:logSource.userName forKey:@"username"];
-            [WebDic setValue:logSource.password forKey:@"password"];
-            [WebDic setValue:logSource.idid forKey:@"sessionid"];
-            [WebDic setValue:obj[@"report_code"] forKey:@"reportcode"];
-            [WebDic setValue:obj[@"report_name"] forKey:@"reportname"];
-            [WebOtherAy addObject:WebDic];
+            [parameterDic setValue:logSource.userName forKey:@"username"];
+            [parameterDic setValue:logSource.password forKey:@"password"];
+            [parameterDic setValue:logSource.idid forKey:@"sessionid"];
+            [parameterDic setValue:obj[@"report_code"] forKey:@"reportcode"];
+            [parameterDic setValue:obj[@"report_name"] forKey:@"reportname"];
+            [WebOtherAy addObject:parameterDic];
             
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@",obj[@"place_name"]];
@@ -295,9 +296,37 @@
 -(void)enterpriseArchivesRequstWithURL:(NSString *)url{
     
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
-        NSLog(@"%@",dic);
         NSMutableArray * cellAy = [[NSMutableArray alloc]init];
+        loginSource * logSource = [loginSource sharedInstance];
+        [parameterAy removeAllObjects];
         for (NSDictionary *obj in dic[@"obj"]) {
+            NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc]init];
+            
+            [parameterDic setValue:obj[@"Edit"] forKey:@"CMD"];
+            [parameterDic setValue:obj[@"unit_id"] forKey:@"UnitId"];
+            [parameterDic setValue:obj[@"unit_name"] forKey:@"UnitName"];
+            [parameterDic setValue:logSource.obj[@"UserID"] forKey:@"UserId"];
+            [parameterDic setValue:obj[@""] forKey:@"endtime"];
+            [parameterDic setValue:obj[@""] forKey:@"keyword"];
+            [parameterDic setValue:logSource.password forKey:@"password"];
+            [parameterDic setValue:obj[@""] forKey:@"starttime"];
+            [parameterDic setValue:logSource.userName forKey:@"username"];
+            [parameterDic setValue:obj[@""] forKey:@"BusinessId"];
+            [parameterDic setValue:obj[@""] forKey:@"FlowInsId"];
+            [parameterDic setValue:obj[@""] forKey:@"LinkInsId"];
+            [parameterDic setValue:obj[@""] forKey:@"SessionId"];
+            [parameterDic setValue:obj[@""] forKey:@"reportcode"];
+            [parameterDic setValue:obj[@""] forKey:@"reportname"];
+            [parameterDic setValue:obj[@""] forKey:@"sessionid"];
+            [parameterDic setValue:obj[@""] forKey:@"unit_outfall_id"];
+            [parameterDic setValue:obj[@""] forKey:@"unitid"];
+            [parameterDic setValue:obj[@""] forKey:@"ItemId"];
+            [parameterDic setValue:obj[@""] forKey:@"UnitEntityId"];
+            [parameterDic setValue:obj[@""] forKey:@"UnitOutfallId"];
+
+            [parameterAy addObject:parameterDic];
+
+            
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@",obj[@"unit_name"]];
             data.centerTxet = [NSString stringWithFormat:@"%@|%@",obj[@"unit_industry_type"],obj[@"unit_district_type"]];
@@ -334,7 +363,8 @@
     }else if ([self.title isEqualToString:@"企业档案"]){
         LT_WebViewController * next = [[LT_WebViewController alloc]init];
         next.BtnAy = @[@"信息",@"报告",@"监测",@"附件",@"排口",@"工况"];
-//        next.parameter = parameterAy[indexPath.row];
+        next.parameter = parameterAy[indexPath.row];
+        next.sign = @"enterpriseArchives";
         [self.navigationController pushViewController:next animated:YES];
     }
     

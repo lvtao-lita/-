@@ -8,9 +8,13 @@
 
 #import "NetworkRequests.h"
 #import "AFNetworking.h"
+#import "SVProgressHUD.h"
 #import "NSString+subAppend.h"
+#import "loginRecord.h"
 @implementation NetworkRequests
 +(void)requestWithparameters:(NSDictionary *)dic andWithURL:(NSString *)url Success:(void (^)(NSDictionary * dic))success failure:(void (^)(NSDictionary * dic))failure{
+    [SVProgressHUD show];
+    loginRecord * logR = [loginRecord sharedInstance];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     NSURLSessionDataTask * task = [manager POST:url parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -26,11 +30,12 @@
         }else{
             failure(rootDic);
         }
+        [SVProgressHUD dismiss];
        
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSDictionary * dic = @{@"msg":@"网络连接异常"};
         failure(dic);
-        
+        [SVProgressHUD dismiss];
         
     }];
     [task resume];
@@ -38,6 +43,7 @@
 }
 
 +(void)requesPasswordtWithparameters:(NSDictionary *)dic andWithURL:(NSString *)url Success:(void (^)(NSString *password))success failure:(void (^)(NSString *str))failure{
+    [SVProgressHUD show];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     NSURLSessionDataTask * task = [manager POST:url parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -46,10 +52,11 @@
         NSString * string = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
         success(string);
         NSLog(@"请求成功");
+        [SVProgressHUD dismiss];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSString *str = @"网络出现小情绪了";
         failure(str);
-        //            [SVProgressHUD dismiss];
+        [SVProgressHUD dismiss];
         
     }];
     [task resume];
@@ -58,6 +65,7 @@
 
 +(void)requestWithParameters:(NSDictionary *)parameters image:(NSData *)image url:(NSString *)url Success:(void (^)())success failure:(void (^)())failure
  {
+     [SVProgressHUD show];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -74,15 +82,19 @@
         
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         success();
+        [SVProgressHUD dismiss];
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"没进success");
         failure();
+        [SVProgressHUD dismiss];
     }];
     
 }
 //网页html请求
 +(void)requestWebWithparameters:(NSDictionary *)dic andWithURL:(NSString *)url Success:(void (^)(NSString * str))success failure:(void (^)(NSDictionary * dic))failure{
+    [SVProgressHUD show];
+    
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     
@@ -93,11 +105,11 @@
         
         NSString * json = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
             success(json);
-        
+        [SVProgressHUD dismiss];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSDictionary * dic = @{@"msg":@"网络连接异常"};
         failure(dic);
-        
+        [SVProgressHUD dismiss];
         
     }];
     [task resume];

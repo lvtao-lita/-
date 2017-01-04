@@ -7,8 +7,9 @@
 //
 
 #import "LT_affairsViewController.h"
+#import "affairsTableView.h"
 #import "PrefixHeader.pch"
-@interface LT_affairsViewController ()<UIScrollViewDelegate>{
+@interface LT_affairsViewController ()<UIScrollViewDelegate,UITableViewDelegate>{
     navBottomBtnView * view;
     nativeScrollView * scrollVi;
     NSArray * Btnarr;
@@ -69,6 +70,13 @@
     [self.view addSubview:pgView];
     [self addClik];
     [scrollVi creatTabViewListSource:sourceAy];
+    NSArray * subViews =[scrollVi subviews];
+    for (id obj in subViews) {
+        if ([obj isKindOfClass:[UITableView class]]) {
+            affairsTableView * temp = obj;
+            temp.delegate = self;
+        }
+    }
 }
 #pragma mark - 点击事件
 //添加点击事件
@@ -131,7 +139,6 @@
     [dic1 setObject:@"1" forKey:@"start"];
     NSMutableArray * cellAy = [[NSMutableArray alloc]init];
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
-        NSLog(@"%@",dic);
         for (NSDictionary *obj in dic[@"obj"]) {
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@",obj[@"doc_title"]];
@@ -146,6 +153,21 @@
         NSLog(@"shishisshs");
     }];
     
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    AppDelegate * app = (id)[UIApplication sharedApplication].delegate;
+    return 60*app.autoSizeScaleY;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    LT_WebViewController * next = [[LT_WebViewController alloc]init];
+    next.BtnAy = @[@"公文信息",@"附件信息"];
+    next.URLAy = @"http://www.baidu.com";
+    [self.navigationController pushViewController:next animated:YES];
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
+    backItem.title = @"";
+    self.navigationItem.backBarButtonItem = backItem;
 }
 
 CG_INLINE CGRect

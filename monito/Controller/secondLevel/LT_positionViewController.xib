@@ -276,7 +276,7 @@
                 <constraint firstItem="Wmm-Bg-LF6" firstAttribute="trailing" secondItem="j7I-Pb-cgp" secondAttribute="trailing" id="whh-go-enW"/>
                 <constraint firstItem="iHn-2H-sz0" firstAttribute="top" secondItem="kzt-eZ-eeB" secondAttribute="bottom" constant="45" id="zpM-v0-WqM"/>
             </constraints>
-            <point key="canvasLocation" x="32.5" y="90.5"/>
+            <point key="canvasLocation" x="40" y="-48"/>
         </view>
     </objects>
 </document>

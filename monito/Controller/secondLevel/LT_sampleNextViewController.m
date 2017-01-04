@@ -24,6 +24,7 @@
     self.OPView.flowBtn.tag =1;
     self.OPView.sendBtn.tag =2;
     self.OPView.transmitBtn.tag =3;
+    [self creatrightBarButtonItem];
     [self.OPView setButton:self.OPView.transmitBtn WithTittle:@"转办" AndImage:@"backlog"];
 }
 -(void)viewDidAppear:(BOOL)animated{
@@ -116,6 +117,7 @@
 
 -(void)location:(UIButton *)btn{
     LT_positionViewController * position = [[LT_positionViewController alloc]init];
+    position.Nmonitor_unit_name = self.parameter[@"monitor_unit_name"];
     [self.navigationController pushViewController:position animated:YES];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
     backItem.title = @"";

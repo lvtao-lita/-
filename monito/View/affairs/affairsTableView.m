@@ -38,20 +38,7 @@
     //    cell.dateLabel.text   = @"2016-11-11";
     return cell;
 }
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    AppDelegate * app = (id)[UIApplication sharedApplication].delegate;
-    return 60*app.autoSizeScaleY;
-}
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    LT_WebViewController * next = [[LT_WebViewController alloc]init];
-    next.BtnAy = @[@"公文信息",@"附件信息"];
-    next.URLAy = @"http://www.baidu.com";
-    [[self viewController].navigationController pushViewController:next animated:YES];
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
-    backItem.title = @"";
-    [self viewController].navigationItem.backBarButtonItem = backItem;
-}
+
 - (UIViewController *)viewController
 {
     for (UIView* next = [self superview]; next; next = next.superview) {

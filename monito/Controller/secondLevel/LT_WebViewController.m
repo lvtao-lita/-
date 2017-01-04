@@ -145,21 +145,27 @@
                 WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
                 [_scrollView addSubview:WebView];
             }else if ([arr[i] isEqualToString:@"附件"]){
-                UIWebView * WebView = [[UIWebView alloc]init];
-                WebView.tag = i+1;
-                WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
-                [_scrollView addSubview:WebView];
+                if ([self.sign isEqualToString:@"enterpriseArchives"]) {
+                    //企业档案附件为表格
+                    
+                }else{
+                    UIWebView * WebView = [[UIWebView alloc]init];
+                    WebView.tag = i+1;
+                    WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
+                    [_scrollView addSubview:WebView];
+                }
             }else if ([arr[i] isEqualToString:@"报告"]){
-                UIWebView * WebView = [[UIWebView alloc]init];
-                WebView.tag = i+1;
-                WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
-                [_scrollView addSubview:WebView];
+                if ([self.sign isEqualToString:@"enterpriseArchives"]) {
+                    //企业档案报告为表格
+                    
+                }else{
+                    UIWebView * WebView = [[UIWebView alloc]init];
+                    WebView.tag = i+1;
+                    WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
+                    [_scrollView addSubview:WebView];
+                }
+                
             }else if ([arr[i] isEqualToString:@"监测"]){
-                UIWebView * WebView = [[UIWebView alloc]init];
-                WebView.tag = i+1;
-                WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
-                [_scrollView addSubview:WebView];
-            }else if ([arr[i] isEqualToString:@"报告"]){
                 UIWebView * WebView = [[UIWebView alloc]init];
                 WebView.tag = i+1;
                 WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
@@ -183,6 +189,23 @@
                 _OPView.sendBtn.tag     = 2;
                 _OPView.transmitBtn.tag = 3;
                 _OPView.rollback.tag    = 4;
+            }else if ([arr[i] isEqualToString:@"信息"]){
+                UIWebView * WebView = [[UIWebView alloc]init];
+                WebView.tag = i+1;
+                WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
+                [_scrollView addSubview:WebView];
+            }else if ([arr[i] isEqualToString:@"排口"]){
+                //表格
+            }else if ([arr[i] isEqualToString:@"项目"]){
+                UIWebView * WebView = [[UIWebView alloc]init];
+                WebView.tag = i+1;
+                WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
+                [_scrollView addSubview:WebView];
+            }else if ([arr[i] isEqualToString:@"方案"]){
+                UIWebView * WebView = [[UIWebView alloc]init];
+                WebView.tag = i+1;
+                WebView.frame =CGRectMakeRelative(0+375*i, 0, 375, 553);
+                [_scrollView addSubview:WebView];
             }
         }
     }
@@ -284,9 +307,11 @@
     
     [self clickButton:btn];
 }
+#pragma 网页请求
 -(void)clickButton:(UIButton *)btn{
+    NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc]init];
     if ([btn.titleLabel.text isEqualToString:@"详细信息"]) {
-        NSMutableDictionary * parameterDic = [[NSMutableDictionary alloc]init];
+        
         [parameterDic setValue:self.parameter[@"FlowInsID"] forKey:@"FlowInsID"];
         [parameterDic setValue:self.parameter[@"LinkInsId"] forKey:@"LinkInsId"];
         [parameterDic setValue:self.parameter[@"SessionId"] forKey:@"SessionId"];
@@ -325,10 +350,93 @@
         }
         
         
+    }else if ([btn.titleLabel.text isEqualToString:@"信息"]){
+        if ([self.sign isEqualToString:@"examining"]) {
+            [parameterDic setValue:self.parameter[@"CMD"] forKey:@"CMD"];
+            [parameterDic setValue:self.parameter[@"EmergencyId"] forKey:@"EmergencyId"];
+            [self requestWebWithparametre:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MeetEmergency/MeetEmergency.aspx" andNum:0];
+        }else{
+            [parameterDic setValue:self.parameter[@"CMD"] forKey:@"CMD"];
+            [parameterDic setValue:self.parameter[@"UnitId"] forKey:@"UnitId"];
+            [parameterDic setValue:self.parameter[@"UnitName"] forKey:@"UnitName"];
+            [parameterDic setValue:self.parameter[@"UserId"] forKey:@"UserId"];
+            [self requestWebWithparametre:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Unit/UnitManager.aspx" andNum:0];
+        }
+        
+    }else if ([btn.titleLabel.text isEqualToString:@"报告"]){
+        [parameterDic setValue:self.parameter[@"endtime"] forKey:@"endtime"];
+        [parameterDic setValue:self.parameter[@"endtime"] forKey:@"keyword"];
+        [parameterDic setValue:self.parameter[@"password"] forKey:@"password"];
+        [parameterDic setValue:self.parameter[@"starttime"] forKey:@"starttime"];
+        [parameterDic setValue:self.parameter[@"username"] forKey:@"username"];
+        [self requstDatasourceWithParameter:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList2"];
+    }else if ([btn.titleLabel.text isEqualToString:@"监测"]){
+        [parameterDic setValue:self.parameter[@"CMD"] forKey:@"CMD"];
+        [parameterDic setValue:self.parameter[@"UnitId"] forKey:@"UnitId"];
+        [parameterDic setValue:self.parameter[@"UnitName"] forKey:@"UnitName"];
+        [parameterDic setValue:self.parameter[@"UserId"] forKey:@"UserId"];
+        [parameterDic setValue:self.parameter[@"unit_outfall_id"] forKey:@"unit_outfall_id"];
+        [self requestWebWithparametre:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/Pollution/PollutionWater.aspx" andNum:1];
+        
+    }else if ([btn.titleLabel.text isEqualToString:@"附件"]){
+        [parameterDic setValue:self.parameter[@"password"] forKey:@"password"];
+        [parameterDic setValue:self.parameter[@"unitid"] forKey:@"unitid"];
+        [parameterDic setValue:self.parameter[@"username"] forKey:@"username"];
+        
+        [self requstDatasourceWithParameter:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MonTaskSvc.asmx/unitfileList"];
+        
+    }else if ([btn.titleLabel.text isEqualToString:@"排口"]){
+        [parameterDic setValue:self.parameter[@"password"] forKey:@"password"];
+        [parameterDic setValue:self.parameter[@"unitid"] forKey:@"unitid"];
+        [parameterDic setValue:self.parameter[@"username"] forKey:@"username"];
+        
+        [self requstDatasourceWithParameter:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/PollutionUnitSvc.asmx/outfallList"];
+        
+    }else if ([btn.titleLabel.text isEqualToString:@"工况"]){
+        [parameterDic setValue:self.parameter[@"CMD"] forKey:@"CMD"];
+        [parameterDic setValue:self.parameter[@"UnitId"] forKey:@"UnitId"];
+        [parameterDic setValue:self.parameter[@"UnitName"] forKey:@"UnitName"];
+        [parameterDic setValue:self.parameter[@"UserId"] forKey:@"UserId"];
+        [self requestWebWithparametre:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Sample/ConditionUnit.aspx" andNum:2];
+        
+    }else if ([btn.titleLabel.text isEqualToString:@"项目"]){
+        [parameterDic setValue:self.parameter[@"CMD"] forKey:@"CMD"];
+        [parameterDic setValue:self.parameter[@"EmergencyId"] forKey:@"EmergencyId"];
+        [self requestWebWithparametre:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MeetEmergency/MeetItem.aspx" andNum:1];
+        
+    }else if ([btn.titleLabel.text isEqualToString:@"方案"]){
+        [parameterDic setValue:self.parameter[@"CMD"] forKey:@"CMD"];
+        [parameterDic setValue:self.parameter[@"EmergencyId"] forKey:@"EmergencyId"];
+        [self requestWebWithparametre:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MeetEmergency/MeetScheme.aspx" andNum:2];
+        
     }
     
 }
+//网络请求
+-(void)requestWebWithparametre:(NSDictionary *)parameter andURL:(NSString *)url andNum:(int)num{
+    [NetworkRequests requestWebWithparameters:parameter andWithURL:url Success:^(NSString *str) {
+        NSArray * subView =[_scrollView subviews];
+        NSMutableArray * webViewAy = [[NSMutableArray alloc]init];
+        for (id obj in subView) {
+            if ([obj isKindOfClass:[UIWebView class]]) {
+                [webViewAy addObject:obj];
+            }
+        }
+        UIWebView * web = webViewAy[num];
+        [web loadHTMLString:str baseURL:nil];
+    } failure:^(NSDictionary *dic) {
+        NSLog(@"请求失败");
+    }];
+}
 
+#pragma mark - 表格数据请求
+-(void)requstDatasourceWithParameter:(NSDictionary *)parameter andURL:(NSString *)url{
+    [NetworkRequests requestWithparameters:parameter andWithURL:url Success:^(NSDictionary *dic) {
+        
+    } failure:^(NSDictionary *dic) {
+        
+    }];
+}
 //滚动协议
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
     // called when scroll view grinds to a halt
