@@ -81,6 +81,7 @@
 - (IBAction)rememberOutIP:(UIButton *)sender {
     if ( self.outIPBtn.selected == NO) {
         self.outIPBtn.selected= YES;
+        self.InputBtn.selected= NO;
         
     }else{
         self.outIPBtn.selected= NO;
@@ -92,6 +93,7 @@
 - (IBAction)rememberInputIP:(UIButton *)sender {
     if ( self.InputBtn.selected == NO) {
         self.InputBtn.selected= YES;
+        self.outIPBtn.selected= NO;
         
     }else{
         self.InputBtn.selected= NO;
@@ -127,48 +129,56 @@
         _login.INPIPflag = NO;
     }
     
-    
-    
-    //登录操作
-    NSDictionary * dic = @{@"psw":@"tingting",@"estr":[NSString stringWithFormat:@"%@",self.pastword.text]};
-    pswStr = [[NSString alloc]init];
-    loginSource * logSource = [loginSource sharedInstance];
-    [NetworkRequests requesPasswordtWithparameters:dic andWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/LoginSvc.asmx/getTestPsw" Success:^(NSString *password) {
-        NSLog(@"%@",password);
-        pswStr = password;
-   
-        logSource.password = password;
-        _login.encryptPsw = password;
-        NSDictionary * loginDic = @{@"password":[NSString stringWithFormat:@"%@",pswStr],@"username":[NSString stringWithFormat:@"%@",self.userName.text]};
-        [NetworkRequests requestWithparameters:loginDic andWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/LoginSvc.asmx/login" Success:^(NSDictionary *dic) {
-            //记录用户名
-            NSUserDefaults * user = [NSUserDefaults standardUserDefaults];
-            NSData * data = [NSKeyedArchiver archivedDataWithRootObject:_login];
-            [user setObject:data forKey:@"loginRecord"];
-            [user synchronize];
-            //返回数据记录
+    if ([self.userName.text isEqual:@""]) {
+        [hintBox showWith:@"请输入账户名"];
+    }else if ([self.pastword.text  isEqual: @""]){
+        [hintBox showWith:@"请输入密码"];
+    }else if([self.outIP.text  isEqual: @""]){
+        [hintBox showWith:@"请输入外网IP"];
+    }else{
+        //登录操作
+        NSDictionary * dic = @{@"psw":@"tingting",@"estr":[NSString stringWithFormat:@"%@",self.pastword.text]};
+        pswStr = [[NSString alloc]init];
+        loginSource * logSource = [loginSource sharedInstance];
+        [NetworkRequests requesPasswordtWithparameters:dic andWithURL:@"/Manager/MobileSvc/LoginSvc.asmx/getTestPsw" Success:^(NSString *password) {
+            NSLog(@"%@",password);
+            pswStr = password;
             
-            logSource.obj      = dic[@"obj"][0];
-            logSource.idid     = dic[@"id"];
-            logSource.total    = dic[@"total"];
-            logSource.success  = dic[@"success"];
-            logSource.userName = self.userName.text;
-            //跳转
-            LT_HomeViewController * homeCon = [[LT_HomeViewController alloc]init];
-            UINavigationController * navCon = [[UINavigationController alloc]initWithRootViewController:homeCon];
-            [self presentViewController:navCon animated:YES completion:nil];
+            logSource.password = password;
+            _login.encryptPsw = password;
+            NSDictionary * loginDic = @{@"password":[NSString stringWithFormat:@"%@",pswStr],@"username":[NSString stringWithFormat:@"%@",self.userName.text]};
+            [NetworkRequests requestWithparameters:loginDic andWithURL:@"/Manager/MobileSvc/LoginSvc.asmx/login" Success:^(NSDictionary *dic) {
+                //记录用户名
+                NSUserDefaults * user = [NSUserDefaults standardUserDefaults];
+                NSData * data = [NSKeyedArchiver archivedDataWithRootObject:_login];
+                [user setObject:data forKey:@"loginRecord"];
+                [user synchronize];
+                //返回数据记录
+                
+                logSource.obj      = dic[@"obj"][0];
+                logSource.idid     = dic[@"id"];
+                logSource.total    = dic[@"total"];
+                logSource.success  = dic[@"success"];
+                logSource.userName = self.userName.text;
+                //跳转
+                LT_HomeViewController * homeCon = [[LT_HomeViewController alloc]init];
+                UINavigationController * navCon = [[UINavigationController alloc]initWithRootViewController:homeCon];
+                [self presentViewController:navCon animated:YES completion:nil];
+                
+            } failure:^(NSDictionary *dic) {
+                UIAlertController * alert =[UIAlertController alertControllerWithTitle:@"登录失败" message:dic[@"msg"] preferredStyle:UIAlertControllerStyleAlert];
+                [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil]];
+                [self presentViewController:alert animated:YES completion:nil];
+            }];
             
-        } failure:^(NSDictionary *dic) {
-            UIAlertController * alert =[UIAlertController alertControllerWithTitle:@"登录失败" message:dic[@"msg"] preferredStyle:UIAlertControllerStyleAlert];
+        } failure:^(NSString *str){
+            UIAlertController * alert =[UIAlertController alertControllerWithTitle:@"登录失败" message:str preferredStyle:UIAlertControllerStyleAlert];
             [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil]];
             [self presentViewController:alert animated:YES completion:nil];
         }];
-        
-    } failure:^(NSString *str){
-        UIAlertController * alert =[UIAlertController alertControllerWithTitle:@"登录失败" message:str preferredStyle:UIAlertControllerStyleAlert];
-        [alert addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil]];
-        [self presentViewController:alert animated:YES completion:nil];
-    }];
+    }
+    
+    
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField{
     [textField resignFirstResponder];

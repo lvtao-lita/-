@@ -44,4 +44,5 @@
 #import "NetworkRequests.h"
 #import "dateSource.h"
 #import "loginSource.h"
+#import "hintBox.h"
 #endif /* PrefixHeader_pch */

@@ -45,6 +45,9 @@
     }
     return nil;
 }
-
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    AppDelegate * app = (id)[UIApplication sharedApplication].delegate;
+    return 60*app.autoSizeScaleY;
+}
 
 @end

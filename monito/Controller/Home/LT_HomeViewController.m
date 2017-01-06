@@ -34,8 +34,7 @@
 //    NSData * data = [user objectForKey:@"loginRecord"];
 //    loginR = [NSKeyedUnarchiver unarchiveObjectWithData:data];
     NSDictionary * dic = @{@"password":[NSString stringWithFormat:@"%@",loginS.password],@"username":[NSString stringWithFormat:@"%@",loginS.userName]};
-    [NetworkRequests requestWithparameters:dic andWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/LoginSvc.asmx/getAppModule" Success:^(NSDictionary *dic) {
-        NSLog(@"首页列表:%@",dic);
+    [NetworkRequests requestWithparameters:dic andWithURL:@"/Manager/MobileSvc/LoginSvc.asmx/getAppModule" Success:^(NSDictionary *dic) {
         tittleAy = [[NSMutableArray alloc]init];
         for (NSDictionary *obj in dic[@"obj"]) {
             [tittleAy addObject:obj[@"M_CName"]];
@@ -52,7 +51,6 @@
     self.navigationController.navigationBar.barStyle = UIBarStyleBlack;
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-//    self.navigationController.navigationBar.titleTextAttributes =@{NSForegroundColorAttributeName:[UIColor whiteColor]};
     UIView * rightview = [[UIView alloc]initWithFrame:CGRectMakeRelative(0, 0, 44, 44)];
     UIButton * loadWeb = [[UIButton alloc]init];
     loadWeb.frame =CGRectMakeRelative(0, 0, 44, 44);
@@ -81,8 +79,15 @@
 -(void)loadWeb{
     loginSource * log = [loginSource sharedInstance];
     NSString * name = log.obj[@"U_LoginName"];
-    NSString *url = [NSString stringWithFormat:@"http://120.24.7.178/fshb/Manager/MobileSvc/SceneAnalysis.aspx?UserName=%@",name];
-    [HomeWeb loadHomeWev:url];
+    NSString *url = [NSString stringWithFormat:@"/Manager/MobileSvc/SceneAnalysis.aspx?UserName=%@",name];
+    loginRecord * logR = [loginRecord sharedInstance];
+    NSString * string = [[NSString alloc]init];
+    if (![logR.INTIP isEqualToString:@""]) {
+        string = [NSString stringWithFormat:@"%@%@",logR.INTIP,url];
+    }else{
+        string = [NSString stringWithFormat:@"%@%@",logR.OUTIP,url];
+    }
+    [HomeWeb loadHomeWev:string];
     [self creatSource];
 }
 

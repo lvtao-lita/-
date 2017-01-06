@@ -39,7 +39,7 @@
     [dic1 setObject:@"" forKey:@"keyword"];
     [dic1 setObject:loginS.password forKey:@"password"];
     [dic1 setObject:loginS.userName forKey:@"username"];
-    [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
+    [self requestWithURL:@"/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
 }
 -(void)creatUI{
     NSArray *BtnAy =@[@"校核",@"审核"];
@@ -124,10 +124,10 @@
         }
     }
     if (num ==0) {
-        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
+        [self requestWithURL:@"/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
         NSLog(@"校核搜索");
     }else if (num ==1){
-        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
+        [self requestWithURL:@"/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
         NSLog(@"审核搜索");
     }
     
@@ -169,11 +169,11 @@
 -(void)requst:(UIButton *)btn{
     if ([btn.titleLabel.text isEqualToString:@"校核"]) {
         num = 0;
-        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
+        [self requestWithURL:@"/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
     }
     if ([btn.titleLabel.text isEqualToString:@"审核"]) {
         num = 1;
-        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
+        [self requestWithURL:@"/Manager/MobileSvc/AnalyseCheckSvc.asmx/checkList"];
     }
 }
 -(void)requestWithURL:(NSString *)url{

@@ -50,15 +50,15 @@
     [parameter setObject:self.parameter[@"UserId"] forKey:@"UserId"];
     [parameter setObject:self.parameter[@"business_id"] forKey:@"business_id"];
     if ([btn.titleLabel.text isEqualToString:@"基本"]) {
-        [self requstWebviewWithName:0 andParameter:parameter andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Sample/SampleFarm.aspx"];
+        [self requstWebviewWithName:0 andParameter:parameter andURL:@"/Manager/MobileSvc/Sample/SampleFarm.aspx"];
         
     }else if ([btn.titleLabel.text isEqualToString:@"现场"]){
-        [self requstWebviewWithName:1 andParameter:parameter andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Sample/SampleFarmComm.aspx"];
+        [self requstWebviewWithName:1 andParameter:parameter andURL:@"/Manager/MobileSvc/Sample/SampleFarmComm.aspx"];
     }else if ([btn.titleLabel.text isEqualToString:@"工况"]){
-        [self requstWebviewWithName:2 andParameter:parameter andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Sample/Condition.aspx"];
+        [self requstWebviewWithName:2 andParameter:parameter andURL:@"/Manager/MobileSvc/Sample/Condition.aspx"];
     
     }else if ([btn.titleLabel.text isEqualToString:@"绘图"]){
-        [self requstWebviewWithName:3 andParameter:parameter andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Sample/SampleFile/SampleFile.aspx"];
+        [self requstWebviewWithName:3 andParameter:parameter andURL:@"/Manager/MobileSvc/Sample/SampleFile/SampleFile.aspx"];
     }
 }
 -(void)operate:(UIButton *)btn{
@@ -72,7 +72,7 @@
         [dic setObject:self.parameter[@"LinkInsId"] forKey:@"LinkInsId"];
         [dic setObject:self.parameter[@"link_ins_id"] forKey:@"link_ins_id"];
         parameterDic = dic;
-        oneWebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/WorkFlow/FlowLogMon.aspx";
+        oneWebCon.url = @"/Manager/MobileSvc/WorkFlow/FlowLogMon.aspx";
         NSLog(@"流程");
     }else if (btn.tag ==2){
         NSMutableDictionary * dic = [[NSMutableDictionary alloc]init];
@@ -84,7 +84,7 @@
         [dic setObject:self.parameter[@"UserId"] forKey:@"UserId"];
         NSLog(@"发送");
         parameterDic = dic;
-        oneWebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/WorkFlow/NewVersion/TaskSubmit.aspx";
+        oneWebCon.url = @"/Manager/MobileSvc/WorkFlow/NewVersion/TaskSubmit.aspx";
     }else if (btn.tag ==3){
         NSMutableDictionary * dic = [[NSMutableDictionary alloc]init];
         [dic setObject:self.parameter[@"sessionid"] forKey:@"SessionId"];
@@ -95,7 +95,7 @@
         [dic setObject:self.parameter[@"UserId"] forKey:@"UserId"];
         NSLog(@"转办");
         parameterDic = dic;
-        oneWebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/WorkFlow/NewVersion/TaskSpanBack.aspx";
+        oneWebCon.url = @"/Manager/MobileSvc/WorkFlow/NewVersion/TaskSpanBack.aspx";
     }
     
     oneWebCon.parameter = parameterDic;

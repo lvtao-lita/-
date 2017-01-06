@@ -186,16 +186,14 @@
 - (IBAction)saveGPSAdress:(UIButton *)sender {
    
 }
-// 路径规划
+// 路径规划 调用百度地图APP
 - (IBAction)pathPlanning:(UIButton *)sender {
-
-    
-    
-    if (![[UIApplication sharedApplication]canOpenURL:[NSURL URLWithString:@"baidumap://map/"]]) {
-        NSString*urlString=[[NSString stringWithFormat:@"http://maps.apple.com/?daddr=%f,%f&saddr=slat,slng",self.latitude,self.longitude]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"baidumap://map/"]]) {
+        NSString*urlString=[[NSString stringWithFormat:@"baidumap://map/direction?origin={{我的位置}}&destination=latlng:%f,%f|name=目的地  &mode=driving&coord_type=gcj02",self.latitude,self.longitude]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         [[UIApplication sharedApplication]openURL:[NSURL URLWithString:urlString]];
+       
     }else{
-        NSString*urlString=[[NSString stringWithFormat:@"baidumap://map/direction?origin={{我的位置}}&destination=latlng:%f,%f|name=目的地&mode=driving&coord_type=gcj02",self.latitude,self.longitude]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString*urlString=[[NSString stringWithFormat:@"http://maps.apple.com/?daddr=%f,%f&saddr=slat,slng",self.latitude,self.longitude]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
         [[UIApplication sharedApplication]openURL:[NSURL URLWithString:urlString]];
     }
     

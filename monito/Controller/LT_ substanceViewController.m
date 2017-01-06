@@ -59,7 +59,7 @@
     
 }
 -(void)requstion{
-    [NetworkRequests requestWithparameters:dic1 andWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/ReagentSvc.asmx/reagentReceiveList" Success:^(NSDictionary *dic) {
+    [NetworkRequests requestWithparameters:dic1 andWithURL:@"/Manager/MobileSvc/ReagentSvc.asmx/reagentReceiveList" Success:^(NSDictionary *dic) {
         NSMutableArray * cellAy = [[NSMutableArray alloc]init];
         for (NSDictionary *obj in dic[@"obj"]) {
             dateSource * data = [[dateSource alloc]init];

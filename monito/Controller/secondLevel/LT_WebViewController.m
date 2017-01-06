@@ -216,7 +216,7 @@
     if (btn.tag == 1) {
         NSLog(@"流程");
         [parameterDic setValue:self.parameter[@"SessionId"] forKey:@"SessionId"];
-        oneWebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/WorkFlow/FlowLogAnalyseDone.aspx";
+        oneWebCon.url = @"/Manager/MobileSvc/WorkFlow/FlowLogAnalyseDone.aspx";
         
     }else if (btn.tag == 2){
         NSLog(@"发送");
@@ -227,7 +227,7 @@
         [parameterDic setValue:self.parameter[@"UserCName"] forKey:@"UserCName"];
         [parameterDic setValue:self.parameter[@"UserCode"] forKey:@"UserCode"];
         [parameterDic setValue:self.parameter[@"UserId"] forKey:@"UserId"];
-        oneWebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/WorkFlow/NewVersion/TaskSubmit.aspx";
+        oneWebCon.url = @"/Manager/MobileSvc/WorkFlow/NewVersion/TaskSubmit.aspx";
         
     }else if (btn.tag == 3){
         NSLog(@"转办");
@@ -238,7 +238,7 @@
         [parameterDic setValue:self.parameter[@"UserCName"] forKey:@"UserCName"];
         [parameterDic setValue:self.parameter[@"UserCode"] forKey:@"UserCode"];
         [parameterDic setValue:self.parameter[@"UserId"] forKey:@"UserId"];
-        oneWebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/WorkFlow/TaskTransfer.aspx";
+        oneWebCon.url = @"/Manager/MobileSvc/WorkFlow/TaskTransfer.aspx";
         
     }else if (btn.tag == 4){
         NSLog(@"回退");
@@ -249,7 +249,7 @@
         [parameterDic setValue:self.parameter[@"UserCName"] forKey:@"UserCName"];
         [parameterDic setValue:self.parameter[@"UserCode"] forKey:@"UserCode"];
         [parameterDic setValue:self.parameter[@"UserId"] forKey:@"UserId"];
-        oneWebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/WorkFlow/NewVersion/TaskSpanBack.aspx";
+        oneWebCon.url = @"/Manager/MobileSvc/WorkFlow/NewVersion/TaskSpanBack.aspx";
         
     }
     oneWebCon.parameter = parameterDic;
@@ -323,7 +323,7 @@
         [parameterDic setValue:self.parameter[@"link_code"] forKey:@"link_code"];
         [parameterDic setValue:self.parameter[@"taskId"] forKey:@"taskId"];
         if (self.flag == 0) {
-            [NetworkRequests requestWebWithparameters:parameterDic andWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Analyse/ListViewItem.aspx" Success:^(NSString *str) {
+            [NetworkRequests requestWebWithparameters:parameterDic andWithURL:@"/Manager/MobileSvc/Analyse/ListViewItem.aspx" Success:^(NSString *str) {
                 NSArray * subView =[_scrollView subviews];
                 for (id obj in subView) {
                     if ([obj isKindOfClass:[UIWebView class]]) {
@@ -336,7 +336,7 @@
             }];
         }
         if (self.flag ==1) {
-            [NetworkRequests requestWebWithparameters:parameterDic andWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Analyse/ListViewItem.aspx" Success:^(NSString *str) {
+            [NetworkRequests requestWebWithparameters:parameterDic andWithURL:@"/Manager/MobileSvc/Analyse/ListViewItem.aspx" Success:^(NSString *str) {
                 NSArray * subView =[_scrollView subviews];
                 for (id obj in subView) {
                     if ([obj isKindOfClass:[UIWebView class]]) {
@@ -354,13 +354,13 @@
         if ([self.sign isEqualToString:@"examining"]) {
             [parameterDic setValue:self.parameter[@"CMD"] forKey:@"CMD"];
             [parameterDic setValue:self.parameter[@"EmergencyId"] forKey:@"EmergencyId"];
-            [self requestWebWithparametre:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MeetEmergency/MeetEmergency.aspx" andNum:0];
+            [self requestWebWithparametre:parameterDic andURL:@"/Manager/MobileSvc/MeetEmergency/MeetEmergency.aspx" andNum:0];
         }else{
             [parameterDic setValue:self.parameter[@"CMD"] forKey:@"CMD"];
             [parameterDic setValue:self.parameter[@"UnitId"] forKey:@"UnitId"];
             [parameterDic setValue:self.parameter[@"UnitName"] forKey:@"UnitName"];
             [parameterDic setValue:self.parameter[@"UserId"] forKey:@"UserId"];
-            [self requestWebWithparametre:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Unit/UnitManager.aspx" andNum:0];
+            [self requestWebWithparametre:parameterDic andURL:@"/Manager/MobileSvc/Unit/UnitManager.aspx" andNum:0];
         }
         
     }else if ([btn.titleLabel.text isEqualToString:@"报告"]){
@@ -369,45 +369,45 @@
         [parameterDic setValue:self.parameter[@"password"] forKey:@"password"];
         [parameterDic setValue:self.parameter[@"starttime"] forKey:@"starttime"];
         [parameterDic setValue:self.parameter[@"username"] forKey:@"username"];
-        [self requstDatasourceWithParameter:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList2"];
+        [self requstDatasourceWithParameter:parameterDic andURL:@"/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList2"];
     }else if ([btn.titleLabel.text isEqualToString:@"监测"]){
         [parameterDic setValue:self.parameter[@"CMD"] forKey:@"CMD"];
         [parameterDic setValue:self.parameter[@"UnitId"] forKey:@"UnitId"];
         [parameterDic setValue:self.parameter[@"UnitName"] forKey:@"UnitName"];
         [parameterDic setValue:self.parameter[@"UserId"] forKey:@"UserId"];
         [parameterDic setValue:self.parameter[@"unit_outfall_id"] forKey:@"unit_outfall_id"];
-        [self requestWebWithparametre:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/Pollution/PollutionWater.aspx" andNum:1];
+        [self requestWebWithparametre:parameterDic andURL:@"/Manager/MobileSvc/GIS/Pollution/PollutionWater.aspx" andNum:1];
         
     }else if ([btn.titleLabel.text isEqualToString:@"附件"]){
         [parameterDic setValue:self.parameter[@"password"] forKey:@"password"];
         [parameterDic setValue:self.parameter[@"unitid"] forKey:@"unitid"];
         [parameterDic setValue:self.parameter[@"username"] forKey:@"username"];
         
-        [self requstDatasourceWithParameter:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MonTaskSvc.asmx/unitfileList"];
+        [self requstDatasourceWithParameter:parameterDic andURL:@"/Manager/MobileSvc/MonTaskSvc.asmx/unitfileList"];
         
     }else if ([btn.titleLabel.text isEqualToString:@"排口"]){
         [parameterDic setValue:self.parameter[@"password"] forKey:@"password"];
         [parameterDic setValue:self.parameter[@"unitid"] forKey:@"unitid"];
         [parameterDic setValue:self.parameter[@"username"] forKey:@"username"];
         
-        [self requstDatasourceWithParameter:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/PollutionUnitSvc.asmx/outfallList"];
+        [self requstDatasourceWithParameter:parameterDic andURL:@"/Manager/MobileSvc/PollutionUnitSvc.asmx/outfallList"];
         
     }else if ([btn.titleLabel.text isEqualToString:@"工况"]){
         [parameterDic setValue:self.parameter[@"CMD"] forKey:@"CMD"];
         [parameterDic setValue:self.parameter[@"UnitId"] forKey:@"UnitId"];
         [parameterDic setValue:self.parameter[@"UnitName"] forKey:@"UnitName"];
         [parameterDic setValue:self.parameter[@"UserId"] forKey:@"UserId"];
-        [self requestWebWithparametre:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/Sample/ConditionUnit.aspx" andNum:2];
+        [self requestWebWithparametre:parameterDic andURL:@"/Manager/MobileSvc/Sample/ConditionUnit.aspx" andNum:2];
         
     }else if ([btn.titleLabel.text isEqualToString:@"项目"]){
         [parameterDic setValue:self.parameter[@"CMD"] forKey:@"CMD"];
         [parameterDic setValue:self.parameter[@"EmergencyId"] forKey:@"EmergencyId"];
-        [self requestWebWithparametre:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MeetEmergency/MeetItem.aspx" andNum:1];
+        [self requestWebWithparametre:parameterDic andURL:@"/Manager/MobileSvc/MeetEmergency/MeetItem.aspx" andNum:1];
         
     }else if ([btn.titleLabel.text isEqualToString:@"方案"]){
         [parameterDic setValue:self.parameter[@"CMD"] forKey:@"CMD"];
         [parameterDic setValue:self.parameter[@"EmergencyId"] forKey:@"EmergencyId"];
-        [self requestWebWithparametre:parameterDic andURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MeetEmergency/MeetScheme.aspx" andNum:2];
+        [self requestWebWithparametre:parameterDic andURL:@"/Manager/MobileSvc/MeetEmergency/MeetScheme.aspx" andNum:2];
         
     }
     

@@ -33,7 +33,7 @@
     [sourceAy addObject:@[]];
     [sourceAy addObject:@[]];
     [sourceAy addObject:@[]];
-    [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/OADocTaskSvc.asmx/list"];
+    [self requestWithURL:@"/Manager/MobileSvc/OADocTaskSvc.asmx/list"];
 }
 -(void)creatUI{
     NSArray *BtnAy =@[@"发文",@"收文",@"查询"];
@@ -117,15 +117,15 @@
 -(void)requst:(UIButton *)btn{
     if ([btn.titleLabel.text isEqualToString:@"发文"]) {
         num = 0;
-        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/OADocTaskSvc.asmx/list"];
+        [self requestWithURL:@"/Manager/MobileSvc/OADocTaskSvc.asmx/list"];
     }
     if ([btn.titleLabel.text isEqualToString:@"收文"]) {
         num = 1;
-        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/OADocTaskSvc.asmx/list"];
+        [self requestWithURL:@"/Manager/MobileSvc/OADocTaskSvc.asmx/list"];
     }
     if ([btn.titleLabel.text isEqualToString:@"查询"]) {
         num = 2;
-        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/OADocTaskSvc.asmx/list"];
+        [self requestWithURL:@"/Manager/MobileSvc/OADocTaskSvc.asmx/list"];
     }
 }
 
@@ -163,7 +163,6 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     LT_WebViewController * next = [[LT_WebViewController alloc]init];
     next.BtnAy = @[@"公文信息",@"附件信息"];
-    next.URLAy = @"http://www.baidu.com";
     [self.navigationController pushViewController:next animated:YES];
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
     backItem.title = @"";

@@ -23,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.delegate = self;
-    [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/TaskSampleSvc.asmx/sampleJoinList"];
+    [self requestWithURL:@"/Manager/MobileSvc/TaskSampleSvc.asmx/sampleJoinList"];
     UIButton * QRcodeBtn = [[UIButton alloc]initWithFrame:CGRectMakeRelative(260, 0, 110, 40)];
     [QRcodeBtn setTitle:@"扫描二维码" forState:UIControlStateNormal];
     [QRcodeBtn setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
@@ -94,7 +94,7 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     LT_oneWebViewController * WebCon = [[LT_oneWebViewController alloc]init];
-    WebCon.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/Sample/SampleJioFarm.aspx";
+    WebCon.url = @"/Manager/MobileSvc/Sample/SampleJioFarm.aspx";
     WebCon.parameter =parameter[indexPath.row];
     [self.navigationController pushViewController:WebCon animated:YES];
     

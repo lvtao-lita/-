@@ -15,9 +15,17 @@
 +(void)requestWithparameters:(NSDictionary *)dic andWithURL:(NSString *)url Success:(void (^)(NSDictionary * dic))success failure:(void (^)(NSDictionary * dic))failure{
     [SVProgressHUD show];
     loginRecord * logR = [loginRecord sharedInstance];
+    NSString * string = [[NSString alloc]init];
+    if (![logR.INTIP isEqualToString:@""]) {
+        string = [NSString stringWithFormat:@"%@%@",logR.INTIP,url];
+    }else{
+        string = [NSString stringWithFormat:@"%@%@",logR.OUTIP,url];
+    }
+    
+    
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    NSURLSessionDataTask * task = [manager POST:url parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSURLSessionDataTask * task = [manager POST:string parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
         NSString * json = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
@@ -44,9 +52,16 @@
 
 +(void)requesPasswordtWithparameters:(NSDictionary *)dic andWithURL:(NSString *)url Success:(void (^)(NSString *password))success failure:(void (^)(NSString *str))failure{
     [SVProgressHUD show];
+    loginRecord * logR = [loginRecord sharedInstance];
+    NSString * urlstring = [[NSString alloc]init];
+    if (![logR.INTIP isEqualToString:@""]) {
+        urlstring = [NSString stringWithFormat:@"%@%@",logR.INTIP,url];
+    }else{
+        urlstring = [NSString stringWithFormat:@"%@%@",logR.OUTIP,url];
+    }
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    NSURLSessionDataTask * task = [manager POST:url parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSURLSessionDataTask * task = [manager POST:urlstring parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
         NSLog(@"请求进度");
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString * string = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];
@@ -65,11 +80,18 @@
 
 +(void)requestWithParameters:(NSDictionary *)parameters image:(NSData *)image url:(NSString *)url Success:(void (^)())success failure:(void (^)())failure
  {
+     loginRecord * logR = [loginRecord sharedInstance];
+     NSString * string = [[NSString alloc]init];
+     if (![logR.INTIP isEqualToString:@""]) {
+         string = [NSString stringWithFormat:@"%@%@",logR.INTIP,url];
+     }else{
+         string = [NSString stringWithFormat:@"%@%@",logR.OUTIP,url];
+     }
      [SVProgressHUD show];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    [manager POST:url parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+    [manager POST:string parameters:parameters constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         formatter.dateFormat = @"yyyyMMddHHmmss";
         NSString *str = [formatter stringFromDate:[NSDate date]];
@@ -93,6 +115,14 @@
 }
 //网页html请求
 +(void)requestWebWithparameters:(NSDictionary *)dic andWithURL:(NSString *)url Success:(void (^)(NSString * str))success failure:(void (^)(NSDictionary * dic))failure{
+    
+    loginRecord * logR = [loginRecord sharedInstance];
+    NSString * string = [[NSString alloc]init];
+    if (![logR.INTIP isEqualToString:@""]) {
+        string = [NSString stringWithFormat:@"%@%@",logR.INTIP,url];
+    }else{
+        string = [NSString stringWithFormat:@"%@%@",logR.OUTIP,url];
+    }
     [SVProgressHUD show];
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -100,7 +130,7 @@
     
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    NSURLSessionDataTask * task = [manager POST:url parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
+    NSURLSessionDataTask * task = [manager POST:string parameters:dic progress:^(NSProgress * _Nonnull uploadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
         NSString * json = [[NSString alloc]initWithData:responseObject encoding:NSUTF8StringEncoding];

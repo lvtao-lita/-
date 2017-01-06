@@ -38,22 +38,22 @@
     [dic1 setObject:loginS.userName forKey:@"username"];
     [dic1 setObject:@"1" forKey:@"start"];
     if ([self.title isEqualToString:@"应急预案"]) {
-        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/JobInstructionSvc.asmx/listYA"];
+        [self requestWithURL:@"/Manager/MobileSvc/JobInstructionSvc.asmx/listYA"];
     }
     if ([self.title isEqualToString:@"质量手册"]) {
-        [self qualityManualWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/QualityManualSvc.asmx/list"];
+        [self qualityManualWithURL:@"/Manager/MobileSvc/QualityManualSvc.asmx/list"];
     }
     if ([self.title isEqualToString:@"程序文件"]) {
-        [self programFileWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/ProcedureDocumentSvc.asmx/list"];
+        [self programFileWithURL:@"/Manager/MobileSvc/ProcedureDocumentSvc.asmx/list"];
     }
     if ([self.title isEqualToString:@"作业指导书"]) {
-        [self operationInstructionWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/JobInstructionSvc.asmx/list"];
+        [self operationInstructionWithURL:@"/Manager/MobileSvc/JobInstructionSvc.asmx/list"];
     }
     if ([self.title isEqualToString:@"环境标准"]) {
-        [self environmentalStandardsWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/StandardFileSvc.asmx/list"];
+        [self environmentalStandardsWithURL:@"/Manager/MobileSvc/StandardFileSvc.asmx/list"];
     }
     if ([self.title isEqualToString:@"分析方法"]) {
-        [self analyticalMethodWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MethodFileSvc.asmx/list"];
+        [self analyticalMethodWithURL:@"/Manager/MobileSvc/MethodFileSvc.asmx/list"];
     }
 }
 
@@ -67,7 +67,6 @@
 -(void)requestWithURL:(NSString *)url{
     NSMutableArray * cellAy = [[NSMutableArray alloc]init];
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
-        NSLog(@"%@",dic);
         for (NSDictionary *obj in dic[@"obj"]) {
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@",obj[@"chapter_name"]];
@@ -86,7 +85,6 @@
 -(void)qualityManualWithURL:(NSString *)url{
     NSMutableArray * cellAy = [[NSMutableArray alloc]init];
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
-        NSLog(@"%@",dic);
         for (NSDictionary *obj in dic[@"obj"]) {
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@",obj[@"chapter_name"]];
@@ -104,7 +102,7 @@
 -(void)programFileWithURL:(NSString *)url{
     NSMutableArray * cellAy = [[NSMutableArray alloc]init];
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
-        NSLog(@"%@",dic);
+
         for (NSDictionary *obj in dic[@"obj"]) {
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@ %@",obj[@"order_num"],obj[@"document_code"]];
@@ -123,7 +121,7 @@
 -(void)operationInstructionWithURL:(NSString *)url{
     NSMutableArray * cellAy = [[NSMutableArray alloc]init];
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
-        NSLog(@"%@",dic);
+
         for (NSDictionary *obj in dic[@"obj"]) {
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@",obj[@"document_name"]];
@@ -142,7 +140,7 @@
 -(void)environmentalStandardsWithURL:(NSString *)url{
     NSMutableArray * cellAy = [[NSMutableArray alloc]init];
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
-        NSLog(@"%@",dic);
+
         for (NSDictionary *obj in dic[@"obj"]) {
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@%@",obj[@"standard_file_name"],obj[@"standard_file_type"]];
@@ -161,7 +159,7 @@
 -(void)analyticalMethodWithURL:(NSString *)url{
     NSMutableArray * cellAy = [[NSMutableArray alloc]init];
     [NetworkRequests requestWithparameters:dic1 andWithURL:url Success:^(NSDictionary *dic) {
-        NSLog(@"%@",dic);
+
         for (NSDictionary *obj in dic[@"obj"]) {
             dateSource * data = [[dateSource alloc]init];
             data.companyName = [NSString stringWithFormat:@"%@%@",obj[@"method_file_name"],obj[@"method_file_type"]];

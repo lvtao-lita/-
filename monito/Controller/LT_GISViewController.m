@@ -34,10 +34,24 @@
     HomeWeb = [[LT_HomeWeb alloc]init];
     HomeWeb.frame = CGRectMakeRelative(0, 0, 375, 603);
     [self.view addSubview:HomeWeb];
-    [HomeWeb loadHomeWev:@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/GisBMap.aspx"];
+    loginRecord * logR = [loginRecord sharedInstance];
+    NSString * string = [[NSString alloc]init];
+    if (![logR.INTIP isEqualToString:@""]) {
+        string = [NSString stringWithFormat:@"%@/Manager/MobileSvc/GIS/GisBMap.aspx",logR.INTIP];
+    }else{
+        string = [NSString stringWithFormat:@"%@/Manager/MobileSvc/GIS/GisBMap.aspx",logR.OUTIP];
+    }
+    [HomeWeb loadHomeWev:string];
 }
 -(void)loadWeb{
-    [HomeWeb loadHomeWev:@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/GisBMap.aspx"];
+    loginRecord * logR = [loginRecord sharedInstance];
+    NSString * string = [[NSString alloc]init];
+    if (![logR.INTIP isEqualToString:@""]) {
+        string = [NSString stringWithFormat:@"%@/Manager/MobileSvc/GIS/GisBMap.aspx",logR.INTIP];
+    }else{
+        string = [NSString stringWithFormat:@"%@/Manager/MobileSvc/GIS/GisBMap.aspx",logR.OUTIP];
+    }
+    [HomeWeb loadHomeWev:string];
 }
 
 CG_INLINE CGRect

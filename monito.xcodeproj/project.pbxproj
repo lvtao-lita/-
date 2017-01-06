@@ -107,6 +107,8 @@
 		0595C2221DDEE81B0016DB74 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0595C2201DDEE81B0016DB74 /* LaunchScreen.storyboard */; };
 		0595C22D1DDEE81B0016DB74 /* monitoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0595C22C1DDEE81B0016DB74 /* monitoTests.m */; };
 		0595C2381DDEE81B0016DB74 /* monitoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0595C2371DDEE81B0016DB74 /* monitoUITests.m */; };
+		05A1393C1E1F63EF00F20913 /* hintBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 05A1393B1E1F63EF00F20913 /* hintBox.m */; };
+		05A1393F1E1F74F000F20913 /* LT_WebURLViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 05A1393E1E1F74F000F20913 /* LT_WebURLViewController.m */; };
 		05AB02231DE691DA007FBBAC /* LT_WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 05AB02221DE691DA007FBBAC /* LT_WebViewController.m */; };
 		05AB02261DE6BC91007FBBAC /* LT_sampleNextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 05AB02251DE6BC91007FBBAC /* LT_sampleNextViewController.m */; };
 		05AB02291DE6CD06007FBBAC /* LT_MonitoringReportNextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 05AB02281DE6CD06007FBBAC /* LT_MonitoringReportNextViewController.m */; };
@@ -356,6 +358,10 @@
 		0595C2331DDEE81B0016DB74 /* monitoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = monitoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0595C2371DDEE81B0016DB74 /* monitoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = monitoUITests.m; sourceTree = "<group>"; };
 		0595C2391DDEE81B0016DB74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		05A1393A1E1F63EF00F20913 /* hintBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hintBox.h; sourceTree = "<group>"; };
+		05A1393B1E1F63EF00F20913 /* hintBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hintBox.m; sourceTree = "<group>"; };
+		05A1393D1E1F74F000F20913 /* LT_WebURLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LT_WebURLViewController.h; sourceTree = "<group>"; };
+		05A1393E1E1F74F000F20913 /* LT_WebURLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LT_WebURLViewController.m; sourceTree = "<group>"; };
 		05AB02211DE691DA007FBBAC /* LT_WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LT_WebViewController.h; sourceTree = "<group>"; };
 		05AB02221DE691DA007FBBAC /* LT_WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LT_WebViewController.m; sourceTree = "<group>"; };
 		05AB02241DE6BC91007FBBAC /* LT_sampleNextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LT_sampleNextViewController.h; sourceTree = "<group>"; };
@@ -496,6 +502,7 @@
 		05193EBA1DE3E02D006C4AA2 /* library */ = {
 			isa = PBXGroup;
 			children = (
+				05A139391E1F63EF00F20913 /* hintBox */,
 				052A06041E1CDA9B002B9139 /* SVProgressHUD */,
 				0521A3271DEBD3BE00F33DBC /* AFNetworking */,
 				05EED8341DE8281900479104 /* baiduMap */,
@@ -953,6 +960,15 @@
 			path = monitoUITests;
 			sourceTree = "<group>";
 		};
+		05A139391E1F63EF00F20913 /* hintBox */ = {
+			isa = PBXGroup;
+			children = (
+				05A1393A1E1F63EF00F20913 /* hintBox.h */,
+				05A1393B1E1F63EF00F20913 /* hintBox.m */,
+			);
+			path = hintBox;
+			sourceTree = "<group>";
+		};
 		05AB02201DE68C36007FBBAC /* secondLevel */ = {
 			isa = PBXGroup;
 			children = (
@@ -974,6 +990,8 @@
 				05EED8311DE7D58900479104 /* LT_positionViewController.xib */,
 				05096BF71E07B4FA00BF8665 /* LT_oneWebViewController.h */,
 				05096BF81E07B4FA00BF8665 /* LT_oneWebViewController.m */,
+				05A1393D1E1F74F000F20913 /* LT_WebURLViewController.h */,
+				05A1393E1E1F74F000F20913 /* LT_WebURLViewController.m */,
 			);
 			path = secondLevel;
 			sourceTree = "<group>";
@@ -1252,6 +1270,7 @@
 				0521A3551DEBD3BE00F33DBC /* AFAutoPurgingImageCache.m in Sources */,
 				0500AF6E1DE528F0004C2B6A /* navBottomBtnView.m in Sources */,
 				0521A3501DEBD3BE00F33DBC /* AFURLRequestSerialization.m in Sources */,
+				05A1393C1E1F63EF00F20913 /* hintBox.m in Sources */,
 				058828E01DE425B800EFF5C8 /* LT_laboratoryViewController.m in Sources */,
 				058828F51DE427D700EFF5C8 /* LT_settingsViewController.m in Sources */,
 				0592C22F1DE2D455007EE24F /* MyCollectionViewCell.m in Sources */,
@@ -1305,6 +1324,7 @@
 				0559E8211DED7C33001DDC33 /* NSString+subAppend.m in Sources */,
 				058828DA1DE424ED00EFF5C8 /* LT_ sampleViewController.m in Sources */,
 				05EED82D1DE7D1D400479104 /* LT_feedbackFunctionViewController.m in Sources */,
+				05A1393F1E1F74F000F20913 /* LT_WebURLViewController.m in Sources */,
 				058829321DE43E8A00EFF5C8 /* ScanSuccessJumpVC.m in Sources */,
 				0521A34F1DEBD3BE00F33DBC /* AFSecurityPolicy.m in Sources */,
 				0595C2171DDEE81B0016DB74 /* AppDelegate.mm in Sources */,

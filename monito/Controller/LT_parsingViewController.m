@@ -7,6 +7,7 @@
 //
 
 #import "LT_parsingViewController.h"
+#import "LT_WebURLViewController.h"
 #import "PrefixHeader.pch"
 @interface LT_parsingViewController (){
     NSArray *queryTitleAy;
@@ -24,7 +25,11 @@
     // Do any additional setup after loading the view.
     queryTitleAy = @[@"废水",@"废气",@"水环境",@"声环境",@"在线监测"];
     queryImageAy = @[@"pie",@"gauge",@"line",@"bar",@"scatter"];
-    queryurlAy   = @[@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/Pollution/Pollution.aspx",@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/Pollution/PollutionGas.aspx",@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/Water/Water.aspx",@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/Noise/Noise.aspx",@"http://120.24.7.178/fshb/Manager/MobileSvc/GIS/Online/Online.aspx"];
+    queryurlAy   = @[@"/Manager/MobileSvc/GIS/Pollution/Pollution.aspx",
+                     @"/Manager/MobileSvc/GIS/Pollution/PollutionGas.aspx",
+                     @"/Manager/MobileSvc/GIS/Water/Water.aspx",
+                     @"/Manager/MobileSvc/GIS/Noise/Noise.aspx",
+                     @"/Manager/MobileSvc/GIS/Online/Online.aspx"];
     [self setBtn];
 }
 
@@ -41,9 +46,15 @@
     }
 }
 -(void)click:(UIButton *)btn{
-    LT_WebViewController *next = [[LT_WebViewController alloc]init];
-    next.URLAy = queryurlAy[btn.tag-1];
-    [next creatloadItem];
+    LT_WebURLViewController *next = [[LT_WebURLViewController alloc]init];
+    loginRecord * logR = [loginRecord sharedInstance];
+    NSString * string = [[NSString alloc]init];
+    if (![logR.INTIP isEqualToString:@""]) {
+        string = [NSString stringWithFormat:@"%@%@",logR.INTIP,queryurlAy[btn.tag-1]];
+    }else{
+        string = [NSString stringWithFormat:@"%@%@",logR.OUTIP,queryurlAy[btn.tag-1]];
+    }
+    next.URL = string;
     [self.navigationController pushViewController:next animated:YES];
 }
 CG_INLINE CGRect

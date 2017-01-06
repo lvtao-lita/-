@@ -46,29 +46,29 @@
     [dic1 setObject:self.inqView.starTime.text forKey:@"starttime"];
     [dic1 setObject:logSource.userName forKey:@"username"];
     if ([self.title isEqualToString:@"采样信息"]) {
-        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/TaskSampleSvc.asmx/taskSampleList"];
+        [self requestWithURL:@"/Manager/MobileSvc/TaskSampleSvc.asmx/taskSampleList"];
     }
     if ([self.title isEqualToString:@"监测报告"]) {
-        [self MonitoringReportRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/TaskReport/TaskReportSvc.asmx/taskReportList"];
+        [self MonitoringReportRequstWithURL:@"/Manager/MobileSvc/TaskReport/TaskReportSvc.asmx/taskReportList"];
     }
     if ([self.title isEqualToString:@"流程查询"]) {
-        [self flowInquireRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
+        [self flowInquireRequstWithURL:@"/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
     }
     if ([self.title isEqualToString:@"档案查询"]) {
-        [self flowInquireRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
+        [self flowInquireRequstWithURL:@"/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
     }
     if([self.title isEqualToString:@"企业档案"]){
         [dic1 setObject:@"2" forKey:@"start"];
         [dic1 setObject:@"10" forKey:@"limit"];
         [dic1 setObject:@"" forKey:@"starttime"];
-        [self enterpriseArchivesRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/PollutionUnitSvc.asmx/pollutionUnitList"];
+        [self enterpriseArchivesRequstWithURL:@"/Manager/MobileSvc/PollutionUnitSvc.asmx/pollutionUnitList"];
         
     }if ([self.title isEqualToString:@"档案查询"]) {
-        [self flowInquireRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
+        [self flowInquireRequstWithURL:@"/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
     }
     if([self.title isEqualToString:@"设备借还"]){
         
-        [self equipmentBorrowAndRepayWith:@"http://120.24.7.178/fshb/Manager/MobileSvc/ApparatusLendingReturnSvc.asmx/lendingReturnList"parameter:dic1];
+        [self equipmentBorrowAndRepayWith:@"/Manager/MobileSvc/ApparatusLendingReturnSvc.asmx/lendingReturnList"parameter:dic1];
     }
 
 }
@@ -105,29 +105,29 @@
     [dic1 setObject:self.inqView.endTime.text forKey:@"endtime"];
     [dic1 setObject:self.inqView.starTime.text forKey:@"starttime"];
     if ([self.title isEqualToString:@"采样信息"]) {
-        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/TaskSampleSvc.asmx/taskSampleList"];
+        [self requestWithURL:@"/Manager/MobileSvc/TaskSampleSvc.asmx/taskSampleList"];
     }
     if ([self.title isEqualToString:@"监测报告"]) {
-        [self MonitoringReportRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/TaskReport/TaskReportSvc.asmx/taskReportList"];
+        [self MonitoringReportRequstWithURL:@"/Manager/MobileSvc/TaskReport/TaskReportSvc.asmx/taskReportList"];
     }
     if ([self.title isEqualToString:@"流程查询"]) {
-        [self flowInquireRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
+        [self flowInquireRequstWithURL:@"/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
     }
     if ([self.title isEqualToString:@"档案查询"]) {
-        [self flowInquireRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
+        [self flowInquireRequstWithURL:@"/Manager/MobileSvc/MonTaskSvc.asmx/taskAllList"];
     }
     if([self.title isEqualToString:@"样品交接"]){
-        [self requestWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/TaskSampleSvc.asmx/sampleJoinList"];
+        [self requestWithURL:@"/Manager/MobileSvc/TaskSampleSvc.asmx/sampleJoinList"];
     }
     if([self.title isEqualToString:@"企业档案"]){
         [dic1 setObject:@"1" forKey:@"start"];
         [dic1 setObject:@"10" forKey:@"limit"];
         [dic1 setObject:self.inqView.starTime.text forKey:@"starttime"];
-        [self enterpriseArchivesRequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/PollutionUnitSvc.asmx/pollutionUnitList"];
+        [self enterpriseArchivesRequstWithURL:@"/Manager/MobileSvc/PollutionUnitSvc.asmx/pollutionUnitList"];
         
     }
     if([self.title isEqualToString:@"设备借还"]){
-        [self equipmentBorrowAndRepayWith:@"http://120.24.7.178/fshb/Manager/MobileSvc/ApparatusLendingReturnSvc.asmx/lendingReturnList"parameter:dic1];
+        [self equipmentBorrowAndRepayWith:@"/Manager/MobileSvc/ApparatusLendingReturnSvc.asmx/lendingReturnList"parameter:dic1];
     }
     
 }

@@ -40,7 +40,7 @@
     [dic1 setObject:loginS.password forKey:@"password"];
     [dic1 setObject:loginS.userName forKey:@"username"];
 
-    [self RequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MeetEmergencySvc.asmx/list"];
+    [self RequstWithURL:@"/Manager/MobileSvc/MeetEmergencySvc.asmx/list"];
 }
 
 -(void)clik:(UIButton *)btn{
@@ -48,7 +48,7 @@
     [dic1 setObject:@"10" forKey:@"limit"];
     [dic1 setObject:@"1" forKey:@"start"];
     NSLog(@"%@", search.searchTextField.text);
-    [self RequstWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/MeetEmergencySvc.asmx/list"];
+    [self RequstWithURL:@"/Manager/MobileSvc/MeetEmergencySvc.asmx/list"];
 }
 
 -(void)creatMonitoryInquireTableView{

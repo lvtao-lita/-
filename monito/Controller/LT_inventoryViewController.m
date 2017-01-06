@@ -79,7 +79,7 @@
 #warning 未达安全库存量判断条件未知
 -(void)requstion{
     NSDictionary *parameter = [NSDictionary dictionaryWithDictionary:dic1];
-    [NetworkRequests requestWithparameters:parameter andWithURL:@"http://120.24.7.178/fshb/Manager/MobileSvc/ReagentSvc.asmx/reagentList" Success:^(NSDictionary *dic) {
+    [NetworkRequests requestWithparameters:parameter andWithURL:@"/Manager/MobileSvc/ReagentSvc.asmx/reagentList" Success:^(NSDictionary *dic) {
         NSMutableArray * cellAy = [[NSMutableArray alloc]init];
         [parameterAy removeAllObjects];
         loginSource * loginS = [loginSource sharedInstance];
@@ -122,7 +122,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     LT_oneWebViewController *next = [[LT_oneWebViewController alloc]init];
     next.parameter = parameterAy[indexPath.row];
-    next.url = @"http://120.24.7.178/fshb/Manager/MobileSvc/Reagent/ReagentManager.aspx";
+    next.url = @"/Manager/MobileSvc/Reagent/ReagentManager.aspx";
     
     [self.navigationController pushViewController:next animated:YES];
     
